@@ -38,7 +38,9 @@ def part1(df_matchup_schedule):
     st.markdown("## Current Standings")
 
     st.write(
-        "The hunt for the playoffs as it stands. Hover over the columns for more information."
+        "The hunt for the playoffs as it stands. All-play is the record if all teams were to play each other every week.\
+        xWins is the number of wins you would have expected so far based on the all-play record. Accuracy is the number of\
+        points compared to the maximum possible points."
     )
 
     df_matchup_schedule["all_play"] = df_matchup_schedule.groupby("gameweek")["points"].rank("max") - 1
@@ -130,7 +132,7 @@ def part2(df_standings):
     
     st.markdown(
         """
-        ### Wins over Expectation
+        ## Wins over Expectation
         Wins over expectation (WOE) looks at the relationship between actual wins and all-play wins.\
         This shows how lucky or unlucky a team has been with the schedule.
         """

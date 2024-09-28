@@ -1,9 +1,9 @@
 import pandas as pd
-from dotmap import DotMap
 from sleeperpy import (
     User,
     Leagues,
-    Players
+    Players,
+    Avatars
 )
 
 
@@ -12,7 +12,7 @@ def get_league_dict(username, season, sport="nfl"):
     account = User.get_user(username)
     leagues = Leagues.get_all_leagues(account['user_id'], sport, season)
     for league in leagues:
-        all_leagues.append(DotMap(league))
+        all_leagues.append(league)
     
     return all_leagues
 
@@ -48,9 +48,9 @@ def get_roster_df(league_id):
     return pd.concat(roster_list)
 
 
-def get_matchup_df(league_id, upper_week):
+def get_matchup_df(league_id, final_gameweek):
     matchup_list = []
-    for week in range(1, upper_week + 1):
+    for week in range(1, final_gameweek + 1):
         matchups = Leagues.get_matchups(league_id, week)
 
         for matchup in matchups:
@@ -60,7 +60,10 @@ def get_matchup_df(league_id, upper_week):
                 "player_id": matchup["players"],
                 "points": matchup["players_points"].values()
             })
-            df_matchup["starter"] = df_matchup["player_id"].isin(matchup["starters"])
+            if matchup["starters"]:
+                df_matchup["starter"] = df_matchup["player_id"].isin(matchup["starters"])
+            else:
+                df_matchup["starter"] = 0
             df_matchup["gameweek"] = week
             matchup_list.append(df_matchup)
 

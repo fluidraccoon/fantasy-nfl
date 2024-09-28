@@ -43,8 +43,8 @@ def get_potential_points(df_matchups, roster_positions, league_size, gameweek_en
         prob  += sum(x[i] for i in range(0, len(df_lineup)) if df_lineup["position"][i] == "WR") <= num_wr[1]
         prob  += sum(x[i] for i in range(0, len(df_lineup)) if df_lineup["position"][i] == "TE") >= num_te[0]
         prob  += sum(x[i] for i in range(0, len(df_lineup)) if df_lineup["position"][i] == "TE") <= num_te[1]
-        prob  += sum(x[i] for i in range(0, len(df_lineup)) if df_lineup["position"][i] == "K") == num_k
-        prob  += sum(x[i] for i in range(0, len(df_lineup)) if df_lineup["position"][i] == "DEF") == num_def
+        prob  += sum(x[i] for i in range(0, len(df_lineup)) if df_lineup["position"][i] == "K") <= num_k
+        prob  += sum(x[i] for i in range(0, len(df_lineup)) if df_lineup["position"][i] == "DEF") <= num_def
         prob.solve()
 
         for i in range(0, len(df_lineup)):
@@ -73,25 +73,27 @@ def add_pp_data(df_matchups, df_matchup_schedule, df_rosters):
                                             np.where(df_matchup_schedule_pp["pp_points"] < df_matchup_schedule_pp["pp_points_opponent"], 0, 0.5))
     df_matchup_schedule_pp["win"] = np.where(df_matchup_schedule_pp["points"] > df_matchup_schedule_pp["points_opponent"], 1,
                                             np.where(df_matchup_schedule_pp["points"] < df_matchup_schedule_pp["points_opponent"], 0, 0.5))
+    df_matchup_schedule_pp["all_play"] = df_matchup_schedule_pp.groupby('gameweek')['points'].rank() - 1
     
     return df_matchup_schedule_pp
 
 
-def get_matchup_schedule_with_pp(league, df_players, gameweek_end):
-    league_size = league.settings.num_teams
+def get_matchup_schedule_with_pp(league, df_players):
+    league_size = league["settings"]["num_teams"]
+    final_gameweek = 14 if league_size == 12 else 15
 
-    df_users = get_user_df(league.league_id)
-    df_rosters = get_roster_df(league.league_id)\
+    df_users = get_user_df(league["league_id"])
+    df_rosters = get_roster_df(league["league_id"])\
         .merge(df_players[["player_id", "full_name", "position", "team", "age"]], on="player_id", how="left")\
         .merge(df_users[["owner_id", "manager", "team_name"]], on="owner_id", how="left")
-    df_matchups = get_matchup_df(league.league_id, gameweek_end)\
+    df_matchups = get_matchup_df(league["league_id"], final_gameweek)\
         .merge(df_players[["player_id", "full_name", "position", "team"]], on="player_id", how="left")
     df_matchups["full_name"] = np.where(df_matchups["position"].eq("DEF"), df_matchups["team"], df_matchups["full_name"])
     df_matchup_schedule = get_matchup_schedule_df(df_matchups)
 
-    df_matchups = get_potential_points(df_matchups, league.roster_positions, league_size, gameweek_end)
+    df_matchups = get_potential_points(df_matchups, league["roster_positions"], league_size, final_gameweek)
 
     df_matchup_schedule = add_pp_data(df_matchups, df_matchup_schedule, df_rosters)
-    df_matchup_schedule["league"] = league.name
+    df_matchup_schedule["league"] = league["name"]
 
-    return df_matchup_schedule
+    return df_matchup_schedule, df_rosters, df_matchups
