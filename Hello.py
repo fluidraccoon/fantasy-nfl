@@ -27,7 +27,7 @@ max_gameweek = max(df_matchup_schedule["gameweek"])
 # with st.sidebar:
 #     gameweek_start, gameweek_end = st.slider("Select gameweeks", 1, 2, (1, 2))
 gameweek_start = 1
-gameweek_end = 1
+gameweek_end = 3
 df_matchup_schedule = df_matchup_schedule[
     (df_matchup_schedule["gameweek"] >= gameweek_start) & (df_matchup_schedule["gameweek"] <= gameweek_end)
 ]
@@ -168,3 +168,4 @@ def part2(df_standings):
 
 df_standings = part1(df_matchup_schedule)
 part2(df_standings)
+
