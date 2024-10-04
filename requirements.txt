@@ -3,3 +3,4 @@ IPython
 sleeper-py
 rpy2
 pulp
+nfl_data_py
