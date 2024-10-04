@@ -5,9 +5,10 @@ import rpy2.robjects as ro
 from rpy2.robjects import pandas2ri
 
 # one-time execution to build & install the ffsimulator R package
-utils= importr('utils')
-utils.chooseCRANmirror(ind=1)
-utils.install_packages(StrVector(['ffscrapr']))
+# utils= importr('utils')
+# utils.chooseCRANmirror(ind=1)
+utils = ro.r('utils')
+utils.install_packages(ro.StrVector(['ffscrapr']))
 # utils.install_packages(StrVector(['devtools']))
 # devtools = importr('devtools')
 # devtools.install_github('dynastyprocess/ffpros')
