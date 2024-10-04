@@ -33,7 +33,7 @@ jobs:
 
       - name: Install R dependencies
         run: |
-          Rscript -e 'install.packages("ffsimulator", repos = "https://ffverse.r-universe.dev")'
+          Rscript -e 'remotes::install_github("ffverse/ffsimulator")'
 
       - name: Run Python Script
         run: |
