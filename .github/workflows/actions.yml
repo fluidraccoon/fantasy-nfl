@@ -33,7 +33,7 @@ jobs:
 
       - name: Install R dependencies
         run: |
-          Rscript -e 'install_packages("remotes")'
+          Rscript -e 'install.packages("remotes")'
           Rscript -e 'remotes::install_github("ffverse/ffsimulator")'
 
       - name: Run Python Script
