@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m venv nfl-env
-          nfl-env/Scripts/activate
+          source nfl-env/bin/activate
           pip install -r requirements.txt
     
       # - name: Activate virtualenv
@@ -40,7 +40,7 @@ jobs:
 
       - name: Run Python Script
         run: |
-          nfl-env\Scripts\activate 
+          source nfl-env/bin/activate  
           python run_data_creation.py
 
       # - name: Run Python Script
