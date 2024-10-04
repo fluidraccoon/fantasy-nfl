@@ -31,11 +31,11 @@ jobs:
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
 
-    - name: Install R packages
-      run: |
-        R -e "install.packages('remotes')"
-        R -e "remotes::install_github('ffverse/ffscrapr')"
-        R -e "remotes::install_github('ffverse/ffsimulator')"
+      - name: Install R packages
+        run: |
+          R -e "install.packages('remotes')"
+          R -e "remotes::install_github('ffverse/ffscrapr')"
+          R -e "remotes::install_github('ffverse/ffsimulator')"
 
       # - name: Install Dependencies
       #   run: |
