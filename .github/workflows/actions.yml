@@ -21,6 +21,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12.4' # install the python version needed
+    
+      # - name: Activate virtualenv
+      #   run: |
+      #     . .venv/bin/activate
+      #     echo PATH=$PATH >> $GITHUB_ENV
 
       # - name: install python packages
       #   run: |
@@ -28,7 +33,12 @@ jobs:
       #     pip install -r requirements.txt
 
       - name: Run Python Script
-        run: python run_data_creation.py
+        run: |
+          . .nfl-env/Scripts/activate
+          python run_data_creation.py
+
+      # - name: Run Python Script
+      #   run: python run_data_creation.py
 
       # - name: commit files
       #   run: |
