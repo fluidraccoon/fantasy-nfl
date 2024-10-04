@@ -38,7 +38,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          R -e "install.packages('remotes')"
+          R -e "install.packages(c('remotes', 'gitcreds'))"
       
       - name: Set up GitHub PAT
         run: |
