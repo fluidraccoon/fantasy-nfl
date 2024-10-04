@@ -7,7 +7,7 @@ import re
 import itertools
 import os
 from scoring_history import dp_playerids
-from import_r_packages import (ffsimulator, ffscrapr, ffpros, convert_r_to_py)
+from import_r_packages import ffscrapr
 from rpy2.robjects import pandas2ri, r
 from scipy.stats import norm, binom
 from scipy.optimize import linprog
