@@ -38,13 +38,13 @@ jobs:
       #     python -m pip install --upgrade pip
       #     pip install -r requirements.txt
 
-      # - name: Run Python Script
-      #   run: |
-      #     . .nfl-env/Scripts/activate
-      #     python run_data_creation.py
-
       - name: Run Python Script
-        run: python run_data_creation.py
+        run: |
+          source nfl-env\Scripts\activate 
+          python run_data_creation.py
+
+      # - name: Run Python Script
+      #   run: python run_data_creation.py
 
       # - name: commit files
       #   run: |
