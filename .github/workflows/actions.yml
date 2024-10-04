@@ -40,9 +40,9 @@ jobs:
         run: |
           R -e "install.packages('remotes')"
       
-      # - name: Set up GitHub PAT
-      #   run: |
-      #     echo "${{ secrets.GITHUB_TOKEN }}" | Rscript -e "gitcreds::gitcreds_set()"
+      - name: Set up GitHub PAT
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | Rscript -e "gitcreds::gitcreds_set()"
 
       - name: Install ffsimulator
         run: |
