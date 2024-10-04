@@ -38,15 +38,11 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          R -e "install.packages(c('remotes', 'gitcreds'))"
-      
-      - name: Set up GitHub PAT
-        run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | Rscript -e "gitcreds::gitcreds_set()"
+          R -e "install.packages('ffscrapr')"
 
-      - name: Install ffsimulator
-        run: |
-          R -e "remotes::install_github('ffverse/ffsimulator')"
+      # - name: Install ffsimulator
+      #   run: |
+      #     R -e "remotes::install_github('ffverse/ffsimulator')"
 
       - name: Run Python Script
         run: |

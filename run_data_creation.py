@@ -4,21 +4,19 @@ from sleeper_helpers import (
     get_players_df
 )
 import rpy2.robjects as ro
-from rpy2.robjects import pandas2ri, r
+from rpy2.robjects import pandas2ri
 from standings_helpers import get_matchup_schedule_with_pp
-from scoring_history import get_scoring_history
 from ffs_latest_rankings import (
     ffs_latest_rankings,
     get_ff_rosters,
     get_ff_starter_positions,
     ffs_adp_outcomes,
-    ffs_generate_projections_week,
     ffs_generate_projections,
     ffs_score_rosters,
     ffs_optimise_lineups,
     ffs_summarise_week
 )
-from import_r_packages import (ffsimulator, ffscrapr, ffpros, convert_r_to_py)
+from import_r_packages import ffscrapr
 
 df_players = get_players_df()
 
