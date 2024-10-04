@@ -2,3 +2,4 @@ streamlit
 IPython
 sleeper-py
 rpy2
+pulp
