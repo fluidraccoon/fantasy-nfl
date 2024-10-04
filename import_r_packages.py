@@ -16,6 +16,7 @@ utils.install_packages('ffscrapr')
 
 # # if success you can then import the package
 # ffsimulator = importr("ffsimulator")
+ro.r('.libPaths("~/R/libs")')
 ffscrapr = importr("ffscrapr")
 # ffpros = importr("ffpros")
 
