@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m venv .nfl-env
-          source .venv/bin/activate   
+          source nfl-env/Scripts/activate
           pip install -r requirements.txt
     
       # - name: Activate virtualenv
