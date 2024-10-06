@@ -1,7 +1,7 @@
 streamlit
 IPython
 sleeper-py
-rpy2
+rpy2==3.5.1
 pulp
 nfl_data_py
 pandas==2.2.2
