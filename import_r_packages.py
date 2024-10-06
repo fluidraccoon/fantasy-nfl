@@ -1,14 +1,21 @@
+import os
 from rpy2.robjects.packages import importr
 from rpy2.robjects.vectors import StrVector
 import rpy2.robjects.packages as rpackages
 import rpy2.robjects as ro
 from rpy2.robjects import pandas2ri
 
+r_libs_path = os.path.expanduser("~/R/libs")
+ro.r(f'.libPaths("{r_libs_path}")')
+
+if not os.path.exists(r_libs_path):
+    os.makedirs(r_libs_path)
+
 # one-time execution to build & install the ffsimulator R package
 utils = importr('utils')
 # utils.chooseCRANmirror(ind=1)
 # utils = ro.r('utils')
-utils.install_packages('ffscrapr')
+utils.install_packages('ffscrapr', repos='https://cloud.r-project.org')
 # utils.install_packages(StrVector(['devtools']))
 # devtools = importr('devtools')
 # devtools.install_github('dynastyprocess/ffpros')
@@ -16,7 +23,6 @@ utils.install_packages('ffscrapr')
 
 # # if success you can then import the package
 # ffsimulator = importr("ffsimulator")
-ro.r('.libPaths("~/R/libs")')
 ffscrapr = importr("ffscrapr")
 # ffpros = importr("ffpros")
 
