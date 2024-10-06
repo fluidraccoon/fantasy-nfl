@@ -5,3 +5,4 @@ rpy2
 pulp
 nfl_data_py
 pandas==2.2.2
+scipy
