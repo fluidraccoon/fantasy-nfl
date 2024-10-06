@@ -17,6 +17,12 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3 # checkout the repository content
 
+      # Install system dependencies required by R packages
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
