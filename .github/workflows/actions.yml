@@ -47,9 +47,9 @@ jobs:
       #     R -e "remotes::install_github('ffverse/ffscrapr')"
       #     R -e "remotes::install_github('ffverse/ffsimulator')"
 
-      # - name: Install Dependencies
-      #   run: |
-      #     R -e "install.packages('ffscrapr')"
+      - name: Install Dependencies
+        run: |
+          R -e "install.packages('ffscrapr', repos='https://cloud.r-project.org')"
 
       # - name: Install ffsimulator
       #   run: |
