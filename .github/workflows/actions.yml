@@ -30,9 +30,13 @@ jobs:
       
       - name: Install Python dependencies
         run: |
-          python -m venv nfl-env
-          source nfl-env/bin/activate
           pip install -r requirements-actions.txt
+
+      # - name: Install Python dependencies
+      #   run: |
+      #     python -m venv nfl-env
+      #     source nfl-env/bin/activate
+      #     pip install -r requirements-actions.txt
 
       # Set up R environment
       - name: Set up R
@@ -50,8 +54,12 @@ jobs:
 
       - name: Run Python Script
         run: |
-          source nfl-env/bin/activate
           python run_data_creation.py
+
+      # - name: Run Python Script
+      #   run: |
+      #     source nfl-env/bin/activate
+      #     python run_data_creation.py
 
       # Commit and push changes to the repository
       - name: Commit and Push changes

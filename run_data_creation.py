@@ -22,7 +22,7 @@ df_players = get_players_df()
 
 username = "DanCoulton"
 season = 2024
-sims = 1000
+sims = 10
 current_gameweek = 5
 
 all_leagues = get_league_dict(username, season)
@@ -59,8 +59,9 @@ for league in all_leagues:
     
     schedules = pd.concat([df_matchup_schedule.loc[:, ["gameweek", "roster_id", "opponent_id"]].assign(season=i) for i in range(1, sims + 1)], ignore_index=True)
     summary_week = ffs_summarise_week(optimal_scores, schedules, df_matchup_schedule, current_gameweek)
-    summary_week["league"] = league["name"]
-    df_summary_week.append(summary_week)
+    # summary_week["league"] = league["name"]
+    # df_summary_week.append(summary_week)
+    summary_week.to_csv(f'data/df_summary_week_{league["name"]}.csv', index=False)
     
     summary_season = summary_week.groupby(["season", "manager", "roster_id"]).agg(
         h2h_wins=('selected_win', 'sum'),
@@ -72,8 +73,8 @@ for league in all_leagues:
 df_matchup_schedule_all_leagues = pd.concat(df_matchup_schedule_all_leagues)
 df_matchup_schedule_all_leagues.to_csv('data/df_matchup_schedule.csv', index=False)
 
-df_summary_week = pd.concat(df_summary_week)
-df_summary_week.to_csv('data/df_summary_week.csv', index=False)
+# df_summary_week = pd.concat(df_summary_week)
+# df_summary_week.to_csv('data/df_summary_week.csv', index=False)
 
 df_summary_season = pd.concat(df_summary_season)
 df_summary_season.to_csv('data/df_summary_season.csv', index=False)

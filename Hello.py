@@ -78,10 +78,16 @@ def simulate_table():
 def part1(df_matchup_schedule):
     st.markdown("## Current Standings")
 
-    st.write(
-        "The hunt for the playoffs as it stands. All-play is the record if all teams were to play each other every week.\
-        xWins is the number of wins you would have expected so far based on the all-play record. Accuracy is the number of\
-        points compared to the maximum possible points."
+    st.markdown(
+        """
+        The hunt for the playoffs as it stands. All-play is the record if all teams were to play each other every week.
+        xWins is the number of wins you would have expected so far based on the all-play record. Accuracy is the number of
+        points compared to the maximum possible points. The playoff{} % is calculated by calculating player scores 
+        since 2016 based on their rank and sampling these to give a score for each simulation. The optimal lineup is 
+        calculated and then an efficiency score is calculated to give the starting lineup score. {} different seasons have
+        been simulated using the wins to date and the remaining fixtures for each team. Strength of roster is taken into account
+        in these calculations.
+        """.format(" and bye" if league_size==12 else "", sims)
     )
 
     df_matchup_schedule["all_play"] = df_matchup_schedule.groupby("gameweek")["points"].rank("max") - 1
@@ -154,7 +160,8 @@ def part2(df_standings):
     )
 
     win_circle = base.mark_point(filled=True, size=80, opacity=0.8).encode(
-        x=alt.X('wins:Q', title='Wins'),
+        x=alt.X('wins:Q', title='Wins', scale=alt.Scale(nice=False),
+                axis=alt.Axis(tickCount=(df_standings['wins'].max() - df_standings['wins'].min() + 1), tickMinStep=1)),
         tooltip=alt.value(None)
     )
 
@@ -226,6 +233,15 @@ df_standings = part1(df_matchup_schedule)
 part2(df_standings)
 
 def part3(df_summary_season):
+    st.markdown(
+        """
+        ## Win Projections
+        The following chart shows the distribution of total expected wins over the season. Any wins so far
+        have been included in the calculation, and you would expect the spread to reduce as the season progresses
+        and the win totals become more certain.
+        """
+    )
+    
     step = 20
     overlap = 0
     # chart_width = 400
@@ -270,6 +286,12 @@ def part3(df_summary_season):
     chart
 
 def part4(df_summary_season):
+    st.markdown(
+        """
+        ## Projected Season Rank
+        Using the win totals from the chart above, the following chart shows the likelihood of each team finishing in a given position.
+        """
+    )
     # Group by season, arrange, and mutate Position
     df_summary_season['position'] = df_summary_season.groupby('season').apply(
         lambda x: (x['h2h_wins'] + x['points_for']/10000).rank(method='first', ascending=False)
@@ -281,16 +303,25 @@ def part4(df_summary_season):
     # Step 2: Create Altair Chart
     chart2 = alt.Chart(df_summary_season).mark_bar().encode(
         x=alt.X('manager:N', axis=None, sort=alt.Sort(manager_order['manager'].tolist())),
-        y=alt.Y('count():Q', axis=None),
+        y=alt.Y('probability:Q', axis=None),
         color=alt.Color('manager:N', legend=alt.Legend(
             title="Manager",
             orient="right"
-        ), sort=manager_order['manager'].tolist())
+        ), sort=manager_order['manager'].tolist(), scale=alt.Scale(scheme='paired')),
+        tooltip=[
+            alt.Tooltip("manager:N", title="Manager"),
+            alt.Tooltip("probability:Q", title="Probability (%)", format=".1f")
+        ]
+    ).transform_aggregate(
+        count='count()',  # Aggregate to count the number of rows
+        groupby=['manager']  # Group by 'category'
+    ).transform_calculate(
+        probability=f'datum.count / {sims} * 100'  # Calculate count()/1000
     ).properties(
         width=100,
         height=60
     ).facet(
-        facet='position:Q',
+        facet=alt.Facet('position:Q', title='Position'),
         columns=4,
         spacing=10
     ).configure_axis(
@@ -301,7 +332,7 @@ def part4(df_summary_season):
         title={
             'text': [f'Final Season Rank - {sims} Simulated Seasons'],
             'subtitle': [f'{league_selection}'],
-            'anchor': 'start',  # Align title to the start
+            'anchor': 'start',
             'fontSize': 16
         }
     )
