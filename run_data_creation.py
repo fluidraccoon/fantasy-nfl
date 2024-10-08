@@ -22,8 +22,8 @@ df_players = get_players_df()
 
 username = "DanCoulton"
 season = 2024
-sims = 10
-current_gameweek = 4
+sims = 1000
+current_gameweek = 5
 
 all_leagues = get_league_dict(username, season)
 df_matchup_schedule_all_leagues = []

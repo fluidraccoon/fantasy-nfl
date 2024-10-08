@@ -35,7 +35,7 @@ max_gameweek = max(df_matchup_schedule["gameweek"])
 # with st.sidebar:
 #     gameweek_start, gameweek_end = st.slider("Select gameweeks", 1, 2, (1, 2))
 gameweek_start = 1
-gameweek_end = 4
+gameweek_end = 5
 df_matchup_schedule = df_matchup_schedule[
     (df_matchup_schedule["gameweek"] >= gameweek_start) & (df_matchup_schedule["gameweek"] <= gameweek_end)
 ]
@@ -59,7 +59,7 @@ def simulate_table():
     table_sim['Position'] = table_sim.groupby('season')['Points'].rank(method='first', ascending=False).astype(int)
 
     # Adding 'Playoff' column based on condition (if Position <= 6)
-    table_sim['Playoff'] = np.where(table_sim['Position'] <= 6, 1, 0)
+    table_sim['Playoff'] = np.where(table_sim['Position'] <= (6 if league_size==12 else 4 if league_size==10 else 1), 1, 0)
 
     # Adding 'Bye' column based on condition (if Position <= 2)
     table_sim['Bye'] = np.where(table_sim['Position'] <= 2, 1, 0)
@@ -104,6 +104,8 @@ def part1(df_matchup_schedule):
     df_standings = df_standings.drop(columns=["pp_points", "all_play"])
     df_standings = df_standings.merge(playoff_chances, on="manager", how="left")
     df_standings.index = df_standings.index + 1
+    # df_standings = df_standings.drop(columns=["bye"])
+    
 
     def set_background_color(x, league_size):
         if league_size == 12:
@@ -112,25 +114,30 @@ def part1(df_matchup_schedule):
             color = "#79c973" if x.name <=4 else "#ff6666"
 
         return [f"background-color: {color}" for i in x]
+    
+    config_columns = {
+        "manager": st.column_config.TextColumn("Manager", help="Username of team manager"),
+        "wins": st.column_config.NumberColumn("Wins", help="Number of wins so far"),
+        "points": st.column_config.NumberColumn("Points", help="Number of points so far"),
+        "all_play_display": st.column_config.TextColumn("All-Play", help="Wins and losses if you played every team each week"),
+        "xwins": st.column_config.TextColumn("xWins", help="Expected number of wins based on the all-play record"),
+        "accuracy": st.column_config.ProgressColumn("Accuracy", help="Accuracy of team selection compared to maximum points", min_value=0, max_value=1),
+        "playoff": st.column_config.NumberColumn("Playoff %", help="% chance of team making the playoffs"),
+        "bye": st.column_config.NumberColumn("Bye %", help="% chance of team getting a first-round bye"),
+    }
+    if league_size==10:
+        del config_columns["bye"]
+        df_standings = df_standings.drop(columns=["bye"])
 
     st.dataframe(
         df_standings.style\
             .format("{:.0f}", subset=["wins"])\
             .format("{:.2f}", subset=["points"])\
             .format("{:.1f}", subset=["xwins"])\
-            .format("{:.1%}", subset=["accuracy", "playoff", "bye"])\
+            .format("{:.1%}", subset=["accuracy", "playoff", "bye"] if league_size==12 else ["accuracy", "playoff"])\
             .apply(lambda x: set_background_color(x, league_size), axis=1)\
             .apply(lambda x: [f"color: white" for i in x], axis=1),
-        column_config={
-            "manager": st.column_config.TextColumn("Manager", help="Username of team manager"),
-            "wins": st.column_config.NumberColumn("Wins", help="Number of wins so far"),
-            "points": st.column_config.NumberColumn("Points", help="Number of points so far"),
-            "all_play_display": st.column_config.TextColumn("All-Play", help="Wins and losses if you played every team each week"),
-            "xwins": st.column_config.TextColumn("xWins", help="Expected number of wins based on the all-play record"),
-            "accuracy": st.column_config.ProgressColumn("Accuracy", help="Accuracy of team selection compared to maximum points", min_value=0, max_value=1),
-            "playoff": st.column_config.NumberColumn("Playoff %", help="% chance of team making the playoffs"),
-            "bye": st.column_config.NumberColumn("Bye %", help="% chance of team getting a first-round bye"),
-        },
+        column_config=config_columns,
         height=35*len(df_standings)+38
     )
 
