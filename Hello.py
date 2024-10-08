@@ -118,8 +118,7 @@ def part1(df_matchup_schedule):
             .format("{:.0f}", subset=["wins"])\
             .format("{:.2f}", subset=["points"])\
             .format("{:.1f}", subset=["xwins"])\
-            .format("{:.1%}", subset=["accuracy"])\
-            .format("{:.1%}", subset=["playoff", "bye"])\
+            .format("{:.1%}", subset=["accuracy", "playoff", "bye"])\
             .apply(lambda x: set_background_color(x, league_size), axis=1)\
             .apply(lambda x: [f"color: white" for i in x], axis=1),
         column_config={
@@ -129,8 +128,8 @@ def part1(df_matchup_schedule):
             "all_play_display": st.column_config.TextColumn("All-Play", help="Wins and losses if you played every team each week"),
             "xwins": st.column_config.TextColumn("xWins", help="Expected number of wins based on the all-play record"),
             "accuracy": st.column_config.ProgressColumn("Accuracy", help="Accuracy of team selection compared to maximum points", min_value=0, max_value=1),
-            "playoff": st.column_config.TextColumn("PLayoff %", help="% chance of team making the playoffs"),
-            "bye": st.column_config.TextColumn("Bye %", help="% chance of team getting a first-round bye"),
+            "playoff": st.column_config.NumberColumn("Playoff %", help="% chance of team making the playoffs"),
+            "bye": st.column_config.NumberColumn("Bye %", help="% chance of team getting a first-round bye"),
         },
         height=35*len(df_standings)+38
     )

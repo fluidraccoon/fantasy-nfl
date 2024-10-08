@@ -164,3 +164,6 @@ cython_debug/
 #.idea/
 
 data/player_stats/
+
+nfl-env/
+.nfl-venv/
