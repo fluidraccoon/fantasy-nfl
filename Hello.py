@@ -11,7 +11,7 @@ st.set_page_config(
 )
 
 df_matchup_schedule = pd.read_csv("data/df_matchup_schedule.csv")
-df_summary_week = pd.read_csv("data/df_summary_week.csv")
+# df_summary_week = pd.read_csv("data/df_summary_week.csv")
 df_summary_season = pd.read_csv("data/df_summary_season.csv")
 sims = df_summary_season["season"].max()
 
@@ -26,8 +26,9 @@ with st.sidebar:
 
 df_matchup_schedule = df_matchup_schedule[df_matchup_schedule["league"]==league_selection]\
     .drop(columns = ["league"]).reset_index(drop=True)
-df_summary_week = df_summary_week[df_summary_week["league"]==league_selection]\
-    .drop(columns = ["league"]).reset_index(drop=True)
+# df_summary_week = df_summary_week[df_summary_week["league"]==league_selection]\
+#     .drop(columns = ["league"]).reset_index(drop=True)
+df_summary_week = pd.read_csv(f"data/df_summary_week_{league_selection}.csv")
 df_summary_season = df_summary_season[df_summary_season["league"]==league_selection]\
     .drop(columns = ["league"]).reset_index(drop=True)
 
