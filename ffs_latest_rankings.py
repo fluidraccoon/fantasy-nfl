@@ -531,6 +531,7 @@ def ffs_optimise_lineups(
         optimals = ff_optimise_one_lineup(franchise_scores, lineup_constraints)
         optimals.update({
             'roster_id': group['roster_id'].iloc[0],
+            'division': group['division'].iloc[0],
             'season': group['season'].iloc[0],
             'week': group['week'].iloc[0]
         })
@@ -589,7 +590,7 @@ def ffs_summarise_week(optimal_scores, schedules, df_matchup_schedule, current_g
     
     # Select the final columns for the summary
     final_columns = [
-        'season', 'week', 'optimal_score', 'lineup_efficiency',
+        'season', 'week', 'division', 'optimal_score', 'lineup_efficiency',
         'team_score', 'opponent_score', 'optimal_opponent_score', 'result', 'opponent_id', 'allplay_wins',
         'allplay_games', 'allplay_pct', 'roster_id', 'optimal_player_id', 'optimal_player_score'
     ]

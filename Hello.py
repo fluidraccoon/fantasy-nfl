@@ -11,7 +11,6 @@ st.set_page_config(
 )
 
 df_matchup_schedule = pd.read_csv("data/df_matchup_schedule.csv")
-# df_summary_week = pd.read_csv("data/df_summary_week.csv")
 df_summary_season = pd.read_csv("data/df_summary_season.csv")
 sims = df_summary_season["season"].max()
 
@@ -26,8 +25,6 @@ with st.sidebar:
 
 df_matchup_schedule = df_matchup_schedule[df_matchup_schedule["league"]==league_selection]\
     .drop(columns = ["league"]).reset_index(drop=True)
-# df_summary_week = df_summary_week[df_summary_week["league"]==league_selection]\
-#     .drop(columns = ["league"]).reset_index(drop=True)
 df_summary_week = pd.read_csv(f"data/df_summary_week_{league_selection}.csv")
 df_summary_season = df_summary_season[df_summary_season["league"]==league_selection]\
     .drop(columns = ["league"]).reset_index(drop=True)
@@ -36,7 +33,7 @@ max_gameweek = max(df_matchup_schedule["gameweek"])
 # with st.sidebar:
 #     gameweek_start, gameweek_end = st.slider("Select gameweeks", 1, 2, (1, 2))
 gameweek_start = 1
-gameweek_end = 6
+gameweek_end = 8
 df_matchup_schedule = df_matchup_schedule[
     (df_matchup_schedule["gameweek"] >= gameweek_start) & (df_matchup_schedule["gameweek"] <= gameweek_end)
 ]
@@ -45,7 +42,7 @@ league_size = df_matchup_schedule[df_matchup_schedule["gameweek"]==1]["gameweek"
 
 def simulate_table():
     # Grouping by 'season' and 'Manager' and aggregating
-    table_sim = (df_summary_week.groupby(['season', 'manager'], as_index=False)
+    table_sim = (df_summary_week.groupby(['season', 'manager','division'], as_index=False)
                 .agg(Wins=('selected_win', 'sum'),
                     Points=('selected_pts', 'sum'),
                     PWins=('selected_pp_win', 'sum'),
@@ -54,7 +51,10 @@ def simulate_table():
                 )
 
     # Sorting within each group by 'Points' (descending)
-    table_sim = table_sim.sort_values(['season', 'Points'], ascending=[True, False])
+    table_sim["Position"] = table_sim.sort_values(['season', 'division', 'Wins', 'Points'], ascending=[True, True, False, False])\
+        .groupby(['season', 'division']).cumcount() + 1
+    
+    # st.dataframe(table_sim)
 
     # Adding 'Position' column based on rank within each 'season'
     table_sim['Position'] = table_sim.groupby('season')['Points'].rank(method='first', ascending=False).astype(int)

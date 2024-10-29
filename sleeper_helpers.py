@@ -41,7 +41,8 @@ def get_roster_df(league_id):
         df_roster = pd.DataFrame({
             "roster_id": team["roster_id"],
             "owner_id": team["owner_id"],
-            "player_id": team["players"]
+            "player_id": team["players"],
+            "division": team["settings"]["division"] if "division" in team["settings"] else 1
         })
         roster_list.append(df_roster)
 
