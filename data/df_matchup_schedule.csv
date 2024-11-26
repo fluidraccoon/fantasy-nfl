@@ -131,18 +131,18 @@ gameweek,roster_id,pp_points,points,manager,opponent_id,pp_points_opponent,point
 11,10,71.84,60.04,skjowitt,9,162.07999999999998,144.28,0.0,0.0,0.0,Across The Pond
 11,11,98.33999999999999,96.54,Dominichudson1986,3,136.04,128.34,0.0,0.0,3.0,Across The Pond
 11,12,104.12,104.12,jhh82,7,70.96,70.96,1.0,1.0,5.0,Across The Pond
-12,1,0.0,0.0,msouthwell,5,0.0,0.0,0.5,0.5,5.5,Across The Pond
-12,2,0.0,0.0,Newty51,4,0.0,0.0,0.5,0.5,5.5,Across The Pond
-12,3,0.0,0.0,TenAndJerry,8,0.0,0.0,0.5,0.5,5.5,Across The Pond
-12,4,0.0,0.0,DanCoulton,2,0.0,0.0,0.5,0.5,5.5,Across The Pond
-12,5,0.0,0.0,JPLdavies2024,1,0.0,0.0,0.5,0.5,5.5,Across The Pond
-12,6,0.0,0.0,steveoreilly7,11,0.0,0.0,0.5,0.5,5.5,Across The Pond
-12,7,0.0,0.0,JoeWright,10,0.0,0.0,0.5,0.5,5.5,Across The Pond
-12,8,0.0,0.0,mikepearson,3,0.0,0.0,0.5,0.5,5.5,Across The Pond
-12,9,0.0,0.0,benturvill61,12,0.0,0.0,0.5,0.5,5.5,Across The Pond
-12,10,0.0,0.0,skjowitt,7,0.0,0.0,0.5,0.5,5.5,Across The Pond
-12,11,0.0,0.0,Dominichudson1986,6,0.0,0.0,0.5,0.5,5.5,Across The Pond
-12,12,0.0,0.0,jhh82,9,0.0,0.0,0.5,0.5,5.5,Across The Pond
+12,1,103.02,96.62,msouthwell,5,92.42000000000002,90.32000000000001,1.0,1.0,3.0,Across The Pond
+12,2,114.38,99.58,Newty51,4,153.60000000000002,136.2,0.0,0.0,5.0,Across The Pond
+12,3,100.76,100.36,TenAndJerry,8,115.16,89.76,0.0,1.0,6.0,Across The Pond
+12,4,153.60000000000002,136.2,DanCoulton,2,114.38,99.58,1.0,1.0,11.0,Across The Pond
+12,5,92.42000000000002,90.32000000000001,JPLdavies2024,1,103.02,96.62,0.0,0.0,2.0,Across The Pond
+12,6,138.67999999999998,125.78,steveoreilly7,11,72.3,52.8,1.0,1.0,9.0,Across The Pond
+12,7,125.66,97.36,JoeWright,10,115.76,111.06,1.0,0.0,4.0,Across The Pond
+12,8,115.16,89.76,mikepearson,3,100.76,100.36,1.0,0.0,1.0,Across The Pond
+12,9,146.06,116.66,benturvill61,12,131.58,131.58,1.0,0.0,8.0,Across The Pond
+12,10,115.76,111.06,skjowitt,7,125.66,97.36,0.0,1.0,7.0,Across The Pond
+12,11,72.3,52.8,Dominichudson1986,6,138.67999999999998,125.78,0.0,0.0,0.0,Across The Pond
+12,12,131.58,131.58,jhh82,9,146.06,116.66,0.0,1.0,10.0,Across The Pond
 13,1,0.0,0.0,msouthwell,11,0.0,0.0,0.5,0.5,5.5,Across The Pond
 13,2,0.0,0.0,Newty51,7,0.0,0.0,0.5,0.5,5.5,Across The Pond
 13,3,0.0,0.0,TenAndJerry,9,0.0,0.0,0.5,0.5,5.5,Across The Pond
@@ -270,23 +270,23 @@ gameweek,roster_id,pp_points,points,manager,opponent_id,pp_points_opponent,point
 11,1,214.64000000000004,186.54,DanCoulton,9,230.08,200.58,0.0,0.0,8.0,House of Hard Knocks
 11,2,130.95999999999998,130.96,MajorNC,10,149.22000000000003,140.9,0.0,0.0,1.0,House of Hard Knocks
 11,3,113.7,113.7,Tomcoulton10,7,173.56000000000003,151.16,0.0,0.0,0.0,House of Hard Knocks
-11,4,187.14,172.2,0llie,5,163.8,151.1,1.0,1.0,7.0,House of Hard Knocks
-11,5,163.8,151.1,calumedwards,4,187.14,172.2,0.0,0.0,5.0,House of Hard Knocks
+11,4,187.14,172.2,0llie,5,163.3,150.6,1.0,1.0,7.0,House of Hard Knocks
+11,5,163.3,150.6,calumedwards,4,187.14,172.2,0.0,0.0,5.0,House of Hard Knocks
 11,6,161.57999999999998,140.48,hyperpringle,8,170.72,148.42000000000002,0.0,0.0,2.0,House of Hard Knocks
 11,7,173.56000000000003,151.16,Pindeco,3,113.7,113.7,1.0,1.0,6.0,House of Hard Knocks
 11,8,170.72,148.42000000000002,Jonnydubz,6,161.57999999999998,140.48,1.0,1.0,4.0,House of Hard Knocks
 11,9,230.08,200.58,splangtree,1,214.64000000000004,186.54,1.0,1.0,9.0,House of Hard Knocks
 11,10,149.22000000000003,140.9,JoeWright,2,130.95999999999998,130.96,1.0,1.0,3.0,House of Hard Knocks
-12,1,0.0,0.0,DanCoulton,10,0.0,0.0,0.5,0.5,4.5,House of Hard Knocks
-12,2,0.0,0.0,MajorNC,6,0.0,0.0,0.5,0.5,4.5,House of Hard Knocks
-12,3,0.0,0.0,Tomcoulton10,5,0.0,0.0,0.5,0.5,4.5,House of Hard Knocks
-12,4,0.0,0.0,0llie,7,0.0,0.0,0.5,0.5,4.5,House of Hard Knocks
-12,5,0.0,0.0,calumedwards,3,0.0,0.0,0.5,0.5,4.5,House of Hard Knocks
-12,6,0.0,0.0,hyperpringle,2,0.0,0.0,0.5,0.5,4.5,House of Hard Knocks
-12,7,0.0,0.0,Pindeco,4,0.0,0.0,0.5,0.5,4.5,House of Hard Knocks
-12,8,0.0,0.0,Jonnydubz,9,0.0,0.0,0.5,0.5,4.5,House of Hard Knocks
-12,9,0.0,0.0,splangtree,8,0.0,0.0,0.5,0.5,4.5,House of Hard Knocks
-12,10,0.0,0.0,JoeWright,1,0.0,0.0,0.5,0.5,4.5,House of Hard Knocks
+12,1,198.7,180.98,DanCoulton,10,187.68,179.18,1.0,1.0,9.0,House of Hard Knocks
+12,2,127.24000000000001,120.34,MajorNC,6,107.38,93.88,1.0,1.0,1.0,House of Hard Knocks
+12,3,157.16,155.56,Tomcoulton10,5,155.18,139.18,1.0,1.0,7.0,House of Hard Knocks
+12,4,143.82,143.82,0llie,7,147.45999999999998,141.06,0.0,1.0,6.0,House of Hard Knocks
+12,5,155.18,139.18,calumedwards,3,157.16,155.56,0.0,0.0,3.0,House of Hard Knocks
+12,6,107.38,93.88,hyperpringle,2,127.24000000000001,120.34,0.0,0.0,0.0,House of Hard Knocks
+12,7,147.45999999999998,141.06,Pindeco,4,143.82,143.82,1.0,0.0,4.0,House of Hard Knocks
+12,8,171.24,141.72,Jonnydubz,9,142.74,134.6,1.0,1.0,5.0,House of Hard Knocks
+12,9,142.74,134.6,splangtree,8,171.24,141.72,0.0,0.0,2.0,House of Hard Knocks
+12,10,187.68,179.18,JoeWright,1,198.7,180.98,0.0,0.0,8.0,House of Hard Knocks
 13,1,0.0,0.0,DanCoulton,6,0.0,0.0,0.5,0.5,4.5,House of Hard Knocks
 13,2,0.0,0.0,MajorNC,7,0.0,0.0,0.5,0.5,4.5,House of Hard Knocks
 13,3,0.0,0.0,Tomcoulton10,10,0.0,0.0,0.5,0.5,4.5,House of Hard Knocks
@@ -449,18 +449,18 @@ gameweek,roster_id,pp_points,points,manager,opponent_id,pp_points_opponent,point
 11,10,131.28000000000003,117.48,msouthwell,1,169.96,121.94,0.0,0.0,5.0,Super Flex Keeper
 11,11,88.03999999999999,80.44,LannySenior,12,135.51999999999998,102.02,0.0,0.0,0.0,Super Flex Keeper
 11,12,135.51999999999998,102.02,jhh82,11,88.03999999999999,80.44,1.0,1.0,1.0,Super Flex Keeper
-12,1,0.0,0.0,benturvill61,3,0.0,0.0,0.5,0.5,5.5,Super Flex Keeper
-12,2,0.0,0.0,mikepearson,9,0.0,0.0,0.5,0.5,5.5,Super Flex Keeper
-12,3,0.0,0.0,splangtree,1,0.0,0.0,0.5,0.5,5.5,Super Flex Keeper
-12,4,0.0,0.0,DanCoulton,7,0.0,0.0,0.5,0.5,5.5,Super Flex Keeper
-12,5,0.0,0.0,Tomcoulton10,12,0.0,0.0,0.5,0.5,5.5,Super Flex Keeper
-12,6,0.0,0.0,0llie,11,0.0,0.0,0.5,0.5,5.5,Super Flex Keeper
-12,7,0.0,0.0,Pindeco,4,0.0,0.0,0.5,0.5,5.5,Super Flex Keeper
-12,8,0.0,0.0,JoeWright,10,0.0,0.0,0.5,0.5,5.5,Super Flex Keeper
-12,9,0.0,0.0,hyperpringle,2,0.0,0.0,0.5,0.5,5.5,Super Flex Keeper
-12,10,0.0,0.0,msouthwell,8,0.0,0.0,0.5,0.5,5.5,Super Flex Keeper
-12,11,0.0,0.0,LannySenior,6,0.0,0.0,0.5,0.5,5.5,Super Flex Keeper
-12,12,0.0,0.0,jhh82,5,0.0,0.0,0.5,0.5,5.5,Super Flex Keeper
+12,1,136.22,113.22,benturvill61,3,112.38,106.08,1.0,1.0,5.0,Super Flex Keeper
+12,2,140.01999999999998,140.02,mikepearson,9,140.70000000000002,130.8,0.0,1.0,9.0,Super Flex Keeper
+12,3,112.38,106.08,splangtree,1,136.22,113.22,0.0,0.0,4.0,Super Flex Keeper
+12,4,106.08,100.22,DanCoulton,7,136.18,122.08,0.0,0.0,3.0,Super Flex Keeper
+12,5,171.22,137.92,Tomcoulton10,12,159.72,148.22,1.0,0.0,8.0,Super Flex Keeper
+12,6,98.64000000000001,94.5,0llie,11,95.14,85.94,1.0,1.0,2.0,Super Flex Keeper
+12,7,136.18,122.08,Pindeco,4,106.08,100.22,1.0,1.0,6.0,Super Flex Keeper
+12,8,90.24000000000002,90.24000000000001,JoeWright,10,152.46,146.56,0.0,0.0,1.0,Super Flex Keeper
+12,9,140.70000000000002,130.8,hyperpringle,2,140.01999999999998,140.02,1.0,0.0,7.0,Super Flex Keeper
+12,10,152.46,146.56,msouthwell,8,90.24000000000002,90.24000000000001,1.0,1.0,10.0,Super Flex Keeper
+12,11,95.14,85.94,LannySenior,6,98.64000000000001,94.5,0.0,0.0,0.0,Super Flex Keeper
+12,12,159.72,148.22,jhh82,5,171.22,137.92,0.0,1.0,11.0,Super Flex Keeper
 13,1,0.0,0.0,benturvill61,2,0.0,0.0,0.5,0.5,5.5,Super Flex Keeper
 13,2,0.0,0.0,mikepearson,1,0.0,0.0,0.5,0.5,5.5,Super Flex Keeper
 13,3,0.0,0.0,splangtree,8,0.0,0.0,0.5,0.5,5.5,Super Flex Keeper
@@ -617,18 +617,18 @@ gameweek,roster_id,pp_points,points,manager,opponent_id,pp_points_opponent,point
 11,10,115.64,92.24000000000001,msouthwell,8,93.67999999999999,88.58,1.0,1.0,2.0,NFL Dynasty
 11,11,165.38,131.66,Tomcoulton10,12,163.9,138.4,1.0,0.0,6.0,NFL Dynasty
 11,12,163.9,138.4,hyperpringle,11,165.38,131.66,0.0,1.0,11.0,NFL Dynasty
-12,1,0.0,0.0,DanCoulton,8,0.0,0.0,0.5,0.5,5.5,NFL Dynasty
-12,2,0.0,0.0,TenAndJerry,6,0.0,0.0,0.5,0.5,5.5,NFL Dynasty
-12,3,0.0,0.0,benturvill61,12,0.0,0.0,0.5,0.5,5.5,NFL Dynasty
-12,4,0.0,0.0,calumedwards,7,0.0,0.0,0.5,0.5,5.5,NFL Dynasty
-12,5,0.0,0.0,0llie,10,0.0,0.0,0.5,0.5,5.5,NFL Dynasty
-12,6,0.0,0.0,jhh82,2,0.0,0.0,0.5,0.5,5.5,NFL Dynasty
-12,7,0.0,0.0,JoeWright,4,0.0,0.0,0.5,0.5,5.5,NFL Dynasty
-12,8,0.0,0.0,Pindeco,1,0.0,0.0,0.5,0.5,5.5,NFL Dynasty
-12,9,0.0,0.0,mikepearson,11,0.0,0.0,0.5,0.5,5.5,NFL Dynasty
-12,10,0.0,0.0,msouthwell,5,0.0,0.0,0.5,0.5,5.5,NFL Dynasty
-12,11,0.0,0.0,Tomcoulton10,9,0.0,0.0,0.5,0.5,5.5,NFL Dynasty
-12,12,0.0,0.0,hyperpringle,3,0.0,0.0,0.5,0.5,5.5,NFL Dynasty
+12,1,94.62,83.32,DanCoulton,8,148.48,125.47999999999999,0.0,0.0,1.0,NFL Dynasty
+12,2,127.95999999999998,102.62,TenAndJerry,6,132.79999999999998,116.3,0.0,0.0,3.0,NFL Dynasty
+12,3,119.58,118.88,benturvill61,12,165.77999999999997,137.5,0.0,0.0,8.0,NFL Dynasty
+12,4,92.42,77.88,calumedwards,7,155.29999999999998,147.56,0.0,0.0,0.0,NFL Dynasty
+12,5,126.26,113.86,0llie,10,161.29999999999998,115.8,0.0,0.0,5.0,NFL Dynasty
+12,6,132.79999999999998,116.3,jhh82,2,127.95999999999998,102.62,1.0,1.0,7.0,NFL Dynasty
+12,7,155.29999999999998,147.56,JoeWright,4,92.42,77.88,1.0,1.0,11.0,NFL Dynasty
+12,8,148.48,125.47999999999999,Pindeco,1,94.62,83.32,1.0,1.0,9.0,NFL Dynasty
+12,9,147.16,105.36,mikepearson,11,100.98,87.98,1.0,1.0,4.0,NFL Dynasty
+12,10,161.29999999999998,115.8,msouthwell,5,126.26,113.86,1.0,1.0,6.0,NFL Dynasty
+12,11,100.98,87.98,Tomcoulton10,9,147.16,105.36,0.0,0.0,2.0,NFL Dynasty
+12,12,165.77999999999997,137.5,hyperpringle,3,119.58,118.88,1.0,1.0,10.0,NFL Dynasty
 13,1,0.0,0.0,DanCoulton,3,0.0,0.0,0.5,0.5,5.5,NFL Dynasty
 13,2,0.0,0.0,TenAndJerry,5,0.0,0.0,0.5,0.5,5.5,NFL Dynasty
 13,3,0.0,0.0,benturvill61,1,0.0,0.0,0.5,0.5,5.5,NFL Dynasty
@@ -773,11 +773,11 @@ gameweek,roster_id,pp_points,points,manager,opponent_id,pp_points_opponent,point
 10,10,122.56,88.74,Dominichudson1986,8,146.62,128.22,0.0,0.0,3.0,UK Dynasty League 
 10,11,127.84,102.53999999999999,Bolmer,6,100.4,73.44,1.0,1.0,5.0,UK Dynasty League 
 10,12,155.82000000000002,155.12,CantBuyABucket,3,117.4,103.39999999999999,1.0,1.0,11.0,UK Dynasty League 
-11,1,174.79999999999998,158.1,MajorNC,5,153.34,149.54000000000002,1.0,1.0,11.0,UK Dynasty League 
+11,1,174.79999999999998,158.1,MajorNC,5,152.84,149.04000000000002,1.0,1.0,11.0,UK Dynasty League 
 11,2,159.12000000000003,144.22,Tomcoulton10,9,158.38,125.3,1.0,1.0,9.0,UK Dynasty League 
 11,3,178.52,138.52,splangtree,10,162.95999999999998,125.86,1.0,1.0,8.0,UK Dynasty League 
 11,4,149.54000000000002,133.14,benturvill61,6,100.66,87.14,1.0,1.0,7.0,UK Dynasty League 
-11,5,153.34,149.54000000000002,mikepearson,1,174.79999999999998,158.1,0.0,0.0,10.0,UK Dynasty League 
+11,5,152.84,149.04000000000002,mikepearson,1,174.79999999999998,158.1,0.0,0.0,10.0,UK Dynasty League 
 11,6,100.66,87.14,wuds100,4,149.54000000000002,133.14,0.0,0.0,1.0,UK Dynasty League 
 11,7,130.26,116.52,Pindeco,11,105.89999999999999,76.7,1.0,1.0,3.0,UK Dynasty League 
 11,8,125.84,113.74,0llie,12,131.51999999999998,123.42,0.0,0.0,2.0,UK Dynasty League 
@@ -785,18 +785,18 @@ gameweek,roster_id,pp_points,points,manager,opponent_id,pp_points_opponent,point
 11,10,162.95999999999998,125.86,Dominichudson1986,3,178.52,138.52,0.0,0.0,6.0,UK Dynasty League 
 11,11,105.89999999999999,76.7,Bolmer,7,130.26,116.52,0.0,0.0,0.0,UK Dynasty League 
 11,12,131.51999999999998,123.42,CantBuyABucket,8,125.84,113.74,1.0,1.0,4.0,UK Dynasty League 
-12,1,0.0,0.0,MajorNC,2,0.0,0.0,0.5,0.5,5.5,UK Dynasty League 
-12,2,0.0,0.0,Tomcoulton10,1,0.0,0.0,0.5,0.5,5.5,UK Dynasty League 
-12,3,0.0,0.0,splangtree,8,0.0,0.0,0.5,0.5,5.5,UK Dynasty League 
-12,4,0.0,0.0,benturvill61,11,0.0,0.0,0.5,0.5,5.5,UK Dynasty League 
-12,5,0.0,0.0,mikepearson,9,0.0,0.0,0.5,0.5,5.5,UK Dynasty League 
-12,6,0.0,0.0,wuds100,7,0.0,0.0,0.5,0.5,5.5,UK Dynasty League 
-12,7,0.0,0.0,Pindeco,6,0.0,0.0,0.5,0.5,5.5,UK Dynasty League 
-12,8,0.0,0.0,0llie,3,0.0,0.0,0.5,0.5,5.5,UK Dynasty League 
-12,9,0.0,0.0,DanCoulton,5,0.0,0.0,0.5,0.5,5.5,UK Dynasty League 
-12,10,0.0,0.0,Dominichudson1986,12,0.0,0.0,0.5,0.5,5.5,UK Dynasty League 
-12,11,0.0,0.0,Bolmer,4,0.0,0.0,0.5,0.5,5.5,UK Dynasty League 
-12,12,0.0,0.0,CantBuyABucket,10,0.0,0.0,0.5,0.5,5.5,UK Dynasty League 
+12,1,143.06000000000003,135.76,MajorNC,2,173.78,154.16,0.0,0.0,9.0,UK Dynasty League 
+12,2,173.78,154.16,Tomcoulton10,1,143.06000000000003,135.76,1.0,1.0,10.0,UK Dynasty League 
+12,3,115.98000000000002,86.98,splangtree,8,110.56000000000002,91.56,1.0,0.0,1.0,UK Dynasty League 
+12,4,153.54,125.84,benturvill61,11,96.82000000000001,93.22,1.0,1.0,8.0,UK Dynasty League 
+12,5,103.3,98.4,mikepearson,9,120.74,97.88,0.0,1.0,6.0,UK Dynasty League 
+12,6,105.9,88.89999999999999,wuds100,7,177.42000000000002,177.42000000000002,0.0,0.0,2.0,UK Dynasty League 
+12,7,177.42000000000002,177.42000000000002,Pindeco,6,105.9,88.89999999999999,1.0,1.0,11.0,UK Dynasty League 
+12,8,110.56000000000002,91.56,0llie,3,115.98000000000002,86.98,0.0,1.0,3.0,UK Dynasty League 
+12,9,120.74,97.88,DanCoulton,5,103.3,98.4,1.0,0.0,5.0,UK Dynasty League 
+12,10,118.08,65.08,Dominichudson1986,12,119.64,111.64,0.0,0.0,0.0,UK Dynasty League 
+12,11,96.82000000000001,93.22,Bolmer,4,153.54,125.84,0.0,0.0,4.0,UK Dynasty League 
+12,12,119.64,111.64,CantBuyABucket,10,118.08,65.08,1.0,1.0,7.0,UK Dynasty League 
 13,1,0.0,0.0,MajorNC,6,0.0,0.0,0.5,0.5,5.5,UK Dynasty League 
 13,2,0.0,0.0,Tomcoulton10,7,0.0,0.0,0.5,0.5,5.5,UK Dynasty League 
 13,3,0.0,0.0,splangtree,11,0.0,0.0,0.5,0.5,5.5,UK Dynasty League 
