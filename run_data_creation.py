@@ -23,14 +23,14 @@ df_players = get_players_df()
 username = "DanCoulton"
 season = 2024
 sims = 1000
-current_gameweek = 11
+current_gameweek = 12
 
 all_leagues = get_league_dict(username, season)
 df_matchup_schedule_all_leagues = []
 df_summary_week = []
 df_summary_season = []
 for league in all_leagues:
-    # if not league["name"]=="Super Flex Keeper":
+    # if not league["name"]=="House of Hards Knocks":
     #     continue
     conn = ffscrapr.sleeper_connect(season = season, league_id = league["league_id"])
     print(league["league_id"])

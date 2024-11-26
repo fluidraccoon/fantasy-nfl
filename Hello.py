@@ -33,7 +33,7 @@ max_gameweek = max(df_matchup_schedule["gameweek"])
 # with st.sidebar:
 #     gameweek_start, gameweek_end = st.slider("Select gameweeks", 1, 2, (1, 2))
 gameweek_start = 1
-gameweek_end = 11
+gameweek_end = 12
 df_matchup_schedule = df_matchup_schedule[
     (df_matchup_schedule["gameweek"] >= gameweek_start) & (df_matchup_schedule["gameweek"] <= gameweek_end)
 ]
@@ -57,7 +57,7 @@ def simulate_table():
     # st.dataframe(table_sim)
 
     # Adding 'Position' column based on rank within each 'season'
-    table_sim['Position'] = table_sim.groupby('season')['Points'].rank(method='first', ascending=False).astype(int)
+    # table_sim['Position'] = table_sim.groupby('season')['Points'].rank(method='first', ascending=False).astype(int)
 
     # Adding 'Playoff' column based on condition (if Position <= 6)
     table_sim['Playoff'] = np.where(table_sim['Position'] <= (6 if league_size==12 else 4 if league_size==10 else 1), 1, 0)
