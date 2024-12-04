@@ -361,7 +361,13 @@ df_remaining_matchups_wide = df_remaining_matchups.pivot(index=["matchup_id","we
 df_remaining_matchups_wide["adjusted_winner"] = None
 
 # Fixture result selector
-st.markdown("""## Playoff Scenarios""")
+st.markdown(
+    """
+    ## Playoff Scenarios
+    Select the outcomes of the remaining games this season to understand how your playoff chances change with
+    the outcomes of each matchup.
+    """
+)
 
 def clear_all():
     for i in range(0, len(df_remaining_matchups_wide)):
