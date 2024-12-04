@@ -64,7 +64,7 @@ def add_pp_data(df_matchups, df_matchup_schedule, df_rosters):
         points=("starter_points", "sum")
     ).reset_index().merge(df_rosters, on="roster_id", how="left")
     df_matchup_schedule_pp = df_matchup_schedule_pp\
-        .merge(df_matchup_schedule[["gameweek", "roster_id", "opponent_id"]], on=["gameweek", "roster_id"], how="left")
+        .merge(df_matchup_schedule[["gameweek", "matchup_id", "roster_id", "opponent_id"]], on=["gameweek", "roster_id"], how="left")
     df_matchup_schedule_pp = df_matchup_schedule_pp\
         .merge(df_matchup_schedule_pp[["gameweek", "opponent_id", "pp_points", "points"]], left_on=["gameweek", "roster_id"], right_on=["gameweek", "opponent_id"],
             how="left", suffixes=[None, "_opponent"])\

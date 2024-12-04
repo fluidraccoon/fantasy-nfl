@@ -348,3 +348,126 @@ def part4(df_summary_season):
 
 part3(df_summary_season)
 part4(df_summary_season)
+
+df_summary_week_selector = df_summary_week[['season',"matchup_id","roster_id","opponent_id","team_score","opponent_score",'manager',"week",'division','selected_win','selected_pts']]
+
+# st.dataframe(df_summary_week_selector)
+
+df_remaining_matchups = df_summary_week_selector[df_summary_week_selector["week"] > gameweek_end]
+df_remaining_matchups = df_remaining_matchups[["matchup_id","week","manager"]].drop_duplicates()
+
+df_remaining_matchups['idx'] = df_remaining_matchups.groupby(['matchup_id',"week"]).cumcount()
+df_remaining_matchups_wide = df_remaining_matchups.pivot(index=["matchup_id","week"], columns="idx", values="manager").reset_index()
+df_remaining_matchups_wide["adjusted_winner"] = None
+
+# Fixture result selector
+st.markdown("""## Playoff Scenarios""")
+
+def clear_all():
+    for i in range(0, len(df_remaining_matchups_wide)):
+        st.session_state[f'radio_{i}'] = None
+    return
+
+for week in df_remaining_matchups["week"].unique():
+    df_remaining_matchups_wide_week = df_remaining_matchups_wide[df_remaining_matchups_wide["week"] == week]
+    st.markdown("""##### Week {}""".format(week))
+    cols = st.columns(3)
+
+    week_idx = 0 # index needs to be unique overall but need consecutive for weeks to get in right columns
+    for idx, row in df_remaining_matchups_wide_week.iterrows():
+        with cols[week_idx % 3]:
+            tile = st.container(height=85)
+            winner = tile.radio("Select a Winner", index=None, options=[row[0], row[1]], key=f"radio_{idx}", horizontal=False, label_visibility="collapsed")
+        
+            df_remaining_matchups_wide.at[idx, 'adjusted_winner'] = winner
+        
+        week_idx += 1
+
+st.button("Clear all", on_click=clear_all)
+
+df_summary_week_new = df_summary_week.merge(df_remaining_matchups_wide[["matchup_id", "week", "adjusted_winner"]], on=["matchup_id","week"], how="left")
+df_summary_week_new["adjusted_win"] = np.where(
+    df_summary_week_new["adjusted_winner"].isna(), df_summary_week_new["selected_win"], np.where(
+        df_summary_week_new["adjusted_winner"] == df_summary_week_new["manager"], 1, 0
+    )
+)
+
+# Grouping by 'season' and 'Manager' and aggregating
+table_sim = (df_summary_week_new.groupby(['season', 'manager','division'], as_index=False).agg(
+    wins=('adjusted_win', 'sum'),
+    points=('selected_pts', 'sum')
+))
+
+# Sorting within each group by 'Points' (descending)
+table_sim["position"] = table_sim.sort_values(['season', 'division', 'wins', 'points'], ascending=[True, True, False, False])\
+    .groupby(['season', 'division']).cumcount() + 1
+
+# Adding 'Playoff' column based on condition (if Position <= 6)
+if league_selection == "Super Flex Keeper":
+    table_sim_wc = table_sim.copy()
+    table_sim_wc["wins"] = np.where(table_sim_wc["position"] <= 2, 0, table_sim_wc["wins"])
+    table_sim_wc["points"] = np.where(table_sim_wc["position"] <= 2, 0, table_sim_wc["points"])
+    table_sim["overall_position"] = table_sim_wc.sort_values(['season', 'wins', 'points'], ascending=[True, False, False])\
+    .groupby(['season']).cumcount() + 1
+    table_sim['playoff'] = np.where((table_sim['position'] <= 2) | (table_sim["overall_position"] <= 2), 1, 0)
+else:
+    table_sim['playoff'] = np.where(table_sim['position'] <= (6 if league_size==12 else 4 if league_size==10 else 1), 1, 0)
+
+# Adding 'Bye' column based on condition (if Position <= 2)
+if league_selection == "Super Flex Keeper":
+    table_sim['bye'] = np.where(table_sim['position'] == 1, 1, 0)
+else:
+    table_sim['bye'] = np.where(table_sim['position'] <= 2, 1, 0)
+    
+table_sim_new = table_sim.groupby(["manager"]).agg(
+        playoff=("playoff", "mean"),
+        bye=("bye", "mean")
+    ).reset_index()
+
+playoff_chances_fields = ["manager", "playoff", "bye"] if "bye" in df_standings else ["manager", "playoff"]
+table_sim_new = table_sim_new.merge(df_standings[playoff_chances_fields], on="manager", how="left", suffixes=("_adjusted", "_original"))
+table_cols = ["manager", "playoff_original", "playoff_adjusted"] + (["bye_original", "bye_adjusted"] if league_size==12 else [])
+table_sim_new = table_sim_new[table_cols]
+
+st.markdown("""##### Adjusted Playoff Chances""")
+config_columns = {
+    "manager": st.column_config.TextColumn("Manager", help="Username of team manager"),
+    "playoff_original": st.column_config.NumberColumn("Current Playoff %", help="% chance of team making the playoffs"),
+    "playoff_adjusted": st.column_config.NumberColumn("Adjusted Playoff %", help="% chance of team making the playoffs after adjusting wins above"),
+    "bye_original": st.column_config.NumberColumn("Current Bye %", help="% chance of team getting a bye"),
+    "bye_adjusted": st.column_config.NumberColumn("Adjusted Bye %", help="% chance of team getting a bye after adjusting wins above"),
+}
+if league_size==10:
+    del config_columns["bye_original"]
+    del config_columns["bye_adjusted"]
+    # table_sim_new = table_sim_new.drop(columns=["bye"])
+    
+def set_background_color(x, league_size):
+    if league_size == 12:
+        color = "#0080ff" if x.name <=2 else "#79c973" if x.name <=6 else "#ff6666"
+    elif league_size == 10:
+        color = "#79c973" if x.name <=4 else "#ff6666"
+
+    return [f"background-color: {color}" for i in x]
+
+def apply_padding(column):
+    # Apply padding-right if the column is in the target list
+    return ['padding-right: 30px;' for i in column]
+
+columns_to_pad = ["manager"]
+
+
+st.dataframe(
+    table_sim_new.sort_values(by=["bye_original", "playoff_original"] if league_size==12 else ["playoff_original"], ascending=False).style\
+        # .set_table_styles(
+        #     [{'selector': 'td', 'props': [('padding-left', '20px'), ('padding-right', '20px')]}]
+        # )
+        # .apply(lambda x: set_background_color(x, league_size), axis=1)\
+        # .apply(lambda x: [f"border: 2px solid black" for i in x], axis=1)\
+        .apply(lambda x: [f"padding-left: 20px" for i in x], axis=1)\
+        .format("{:.1%}", subset=["playoff_adjusted", "playoff_original", "bye_original", "bye_adjusted"] if league_size==12 else ["playoff_original", "playoff_adjusted"]),
+        # .apply(lambda x: [f"color: white" for i in x], axis=1),
+    column_config=config_columns,
+    height=35*len(df_standings)+38,
+    hide_index = True
+)

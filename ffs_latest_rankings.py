@@ -601,7 +601,7 @@ def ffs_summarise_week(optimal_scores, schedules, df_matchup_schedule, current_g
     summary_week.sort_values(by=['season', 'week', 'roster_id'], inplace=True)
     
     summary_week = summary_week.merge(
-        df_matchup_schedule[["roster_id", "gameweek", "manager", "points", "points_opponent", "win", "all_play",
+        df_matchup_schedule[["roster_id", "gameweek", "matchup_id", "manager", "points", "points_opponent", "win", "all_play",
                             "pp_points", "pp_points_opponent", "pp_win"]],
         left_on=["roster_id", "week"], right_on=["roster_id", "gameweek"], how="left"
     )

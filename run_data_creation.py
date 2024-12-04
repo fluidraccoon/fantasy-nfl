@@ -22,7 +22,7 @@ df_players = get_players_df()
 
 username = "DanCoulton"
 season = 2024
-sims = 1000 
+sims = 1000
 current_gameweek = 13
 
 all_leagues = get_league_dict(username, season)
