@@ -155,18 +155,18 @@ gameweek,roster_id,pp_points,points,manager,opponent_id,pp_points_opponent,point
 13,10,95.84,68.14,skjowitt,4,141.64,135.74,0.0,0.0,0.0,Across The Pond
 13,11,100.16,72.86,Dominichudson1986,1,142.76000000000002,126.66,0.0,0.0,1.0,Across The Pond
 13,12,128.10000000000002,108.2,jhh82,8,125.83999999999999,101.56,1.0,1.0,5.0,Across The Pond
-14,1,0.0,0.0,msouthwell,9,0.0,0.0,0.5,0.5,5.5,Across The Pond
+14,1,0.0,0.0,msouthwell,3,0.0,0.0,0.5,0.5,5.5,Across The Pond
 14,2,0.0,0.0,Newty51,11,0.0,0.0,0.5,0.5,5.5,Across The Pond
-14,3,0.0,0.0,TenAndJerry,10,0.0,0.0,0.5,0.5,5.5,Across The Pond
-14,4,0.0,0.0,DanCoulton,6,0.0,0.0,0.5,0.5,5.5,Across The Pond
-14,5,0.0,0.0,JPLdavies2024,12,0.0,0.0,0.5,0.5,5.5,Across The Pond
-14,6,0.0,0.0,steveoreilly7,4,0.0,0.0,0.5,0.5,5.5,Across The Pond
-14,7,0.0,0.0,JoeWright,8,0.0,0.0,0.5,0.5,5.5,Across The Pond
-14,8,0.0,0.0,mikepearson,7,0.0,0.0,0.5,0.5,5.5,Across The Pond
-14,9,0.0,0.0,benturvill61,1,0.0,0.0,0.5,0.5,5.5,Across The Pond
-14,10,0.0,0.0,skjowitt,3,0.0,0.0,0.5,0.5,5.5,Across The Pond
+14,3,0.0,0.0,TenAndJerry,1,0.0,0.0,0.5,0.5,5.5,Across The Pond
+14,4,0.0,0.0,DanCoulton,9,0.0,0.0,0.5,0.5,5.5,Across The Pond
+14,5,0.0,0.0,JPLdavies2024,8,0.0,0.0,0.5,0.5,5.5,Across The Pond
+14,6,0.0,0.0,steveoreilly7,12,0.0,0.0,0.5,0.5,5.5,Across The Pond
+14,7,0.0,0.0,JoeWright,10,0.0,0.0,0.5,0.5,5.5,Across The Pond
+14,8,0.0,0.0,mikepearson,5,0.0,0.0,0.5,0.5,5.5,Across The Pond
+14,9,0.0,0.0,benturvill61,4,0.0,0.0,0.5,0.5,5.5,Across The Pond
+14,10,0.0,0.0,skjowitt,7,0.0,0.0,0.5,0.5,5.5,Across The Pond
 14,11,0.0,0.0,Dominichudson1986,2,0.0,0.0,0.5,0.5,5.5,Across The Pond
-14,12,0.0,0.0,jhh82,5,0.0,0.0,0.5,0.5,5.5,Across The Pond
+14,12,0.0,0.0,jhh82,6,0.0,0.0,0.5,0.5,5.5,Across The Pond
 1,1,152.98000000000002,126.67999999999999,DanCoulton,2,136.78,103.98,1.0,1.0,4.0,House of Hard Knocks
 1,2,136.78,103.98,MajorNC,1,152.98000000000002,126.67999999999999,0.0,0.0,1.0,House of Hard Knocks
 1,3,110.19999999999999,89.44,Tomcoulton10,4,186.88,167.2,0.0,0.0,0.0,House of Hard Knocks
@@ -632,14 +632,14 @@ gameweek,roster_id,pp_points,points,manager,opponent_id,pp_points_opponent,point
 13,1,132.62,84.02,DanCoulton,3,132.58,116.18,1.0,0.0,0.0,NFL Dynasty
 13,2,121.10000000000001,91.18,TenAndJerry,5,155.62000000000003,134.82,0.0,0.0,1.0,NFL Dynasty
 13,3,132.58,116.18,benturvill61,1,132.62,84.02,0.0,1.0,4.0,NFL Dynasty
-13,4,148.02,123.32000000000001,calumedwards,11,167.16,137.06,0.0,0.0,6.0,NFL Dynasty
+13,4,148.02,123.32000000000001,calumedwards,11,166.16,137.06,0.0,0.0,6.0,NFL Dynasty
 13,5,155.62000000000003,134.82,0llie,2,121.10000000000001,91.18,1.0,1.0,8.0,NFL Dynasty
 13,6,103.36,93.84,jhh82,10,144.54,118.54,0.0,0.0,2.0,NFL Dynasty
 13,7,154.8,134.12,JoeWright,9,161.04000000000002,137.44,0.0,0.0,7.0,NFL Dynasty
 13,8,141.0,99.1,Pindeco,12,167.18,142.1,0.0,0.0,3.0,NFL Dynasty
 13,9,161.04000000000002,137.44,mikepearson,7,154.8,134.12,1.0,1.0,10.0,NFL Dynasty
 13,10,144.54,118.54,msouthwell,6,103.36,93.84,1.0,1.0,5.0,NFL Dynasty
-13,11,167.16,137.06,Tomcoulton10,4,148.02,123.32000000000001,1.0,1.0,9.0,NFL Dynasty
+13,11,166.16,137.06,Tomcoulton10,4,148.02,123.32000000000001,1.0,1.0,9.0,NFL Dynasty
 13,12,167.18,142.1,hyperpringle,8,141.0,99.1,1.0,1.0,11.0,NFL Dynasty
 14,1,0.0,0.0,DanCoulton,12,0.0,0.0,0.5,0.5,5.5,NFL Dynasty
 14,2,0.0,0.0,TenAndJerry,10,0.0,0.0,0.5,0.5,5.5,NFL Dynasty
