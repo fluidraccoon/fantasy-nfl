@@ -50,7 +50,7 @@ for league in all_leagues:
     lineup_constraints = get_ff_starter_positions(league)
     adp_outcomes = ffs_adp_outcomes(scoring_history, seasons = range(2016, 2024), pos_filter=["QB", "RB", "WR", "TE", "K", "DST"])
     
-    projected_scores = ffs_generate_projections(adp_outcomes, latest_rankings_draft, sims, weeks=range(1, df_matchups["gameweek"].max()), rosters=ff_rosters)
+    projected_scores = ffs_generate_projections(adp_outcomes, latest_rankings_draft, sims, weeks=range(1, df_matchups["gameweek"].max() + 1), rosters=ff_rosters)
     roster_scores = ffs_score_rosters(projected_scores, ff_rosters)
     optimal_scores = ffs_optimise_lineups(
         roster_scores, lineup_constraints, lineup_efficiency_mean = 0.775, lineup_efficiency_sd = 0.05,
