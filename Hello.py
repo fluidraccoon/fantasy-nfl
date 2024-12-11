@@ -33,7 +33,7 @@ max_gameweek = max(df_matchup_schedule["gameweek"])
 # with st.sidebar:
 #     gameweek_start, gameweek_end = st.slider("Select gameweeks", 1, 2, (1, 2))
 gameweek_start = 1
-gameweek_end = 13
+gameweek_end = 14
 df_matchup_schedule = df_matchup_schedule[
     (df_matchup_schedule["gameweek"] >= gameweek_start) & (df_matchup_schedule["gameweek"] <= gameweek_end)
 ]
@@ -374,6 +374,7 @@ def clear_all():
         st.session_state[f'radio_{i}'] = None
     return
 
+placeholders = {}
 for week in df_remaining_matchups["week"].unique():
     df_remaining_matchups_wide_week = df_remaining_matchups_wide[df_remaining_matchups_wide["week"] == week]
     st.markdown("""##### Week {}""".format(week))
@@ -382,10 +383,15 @@ for week in df_remaining_matchups["week"].unique():
     week_idx = 0 # index needs to be unique overall but need consecutive for weeks to get in right columns
     for idx, row in df_remaining_matchups_wide_week.iterrows():
         with cols[week_idx % 3]:
-            tile = st.container(height=85)
-            winner = tile.radio("Select a Winner", index=None, options=[row[0], row[1]], key=f"radio_{idx}", horizontal=False, label_visibility="collapsed")
-        
-            df_remaining_matchups_wide.at[idx, 'adjusted_winner'] = winner
+            with st.container(height=85):
+                container_cols = st.columns([3, 1])
+                with container_cols[0]:
+                    winner = st.radio("Select a Winner", index=None, options=[row[0], row[1]], key=f"radio_{idx}", horizontal=False, label_visibility="collapsed")
+                with container_cols[1]:
+                    placeholder1 = st.empty()  # Placeholder for the first percentage
+                    placeholder2 = st.empty()  # Placeholder for the second percentage
+                    placeholders[idx] = (placeholder1, placeholder2)
+        df_remaining_matchups_wide.at[idx, 'adjusted_winner'] = winner
         
         week_idx += 1
 
@@ -398,42 +404,48 @@ df_summary_week_new["adjusted_win"] = np.where(
     )
 )
 
-# Grouping by 'season' and 'Manager' and aggregating
-table_sim = (df_summary_week_new.groupby(['season', 'manager','division'], as_index=False).agg(
-    wins=('adjusted_win', 'sum'),
-    points=('selected_pts', 'sum')
-))
+def calculate_adjusted_playoff_chance(df):
+    table_sim = (df.groupby(['season', 'manager','division'], as_index=False).agg(
+        wins=('adjusted_win', 'sum'),
+        points=('selected_pts', 'sum')
+    ))
 
-# Sorting within each group by 'Points' (descending)
-table_sim["position"] = table_sim.sort_values(['season', 'division', 'wins', 'points'], ascending=[True, True, False, False])\
-    .groupby(['season', 'division']).cumcount() + 1
+    # Sorting within each group by 'Points' (descending)
+    table_sim["position"] = table_sim.sort_values(['season', 'division', 'wins', 'points'], ascending=[True, True, False, False])\
+        .groupby(['season', 'division']).cumcount() + 1
 
-# Adding 'Playoff' column based on condition (if Position <= 6)
-if league_selection == "Super Flex Keeper":
-    table_sim_wc = table_sim.copy()
-    table_sim_wc["wins"] = np.where(table_sim_wc["position"] <= 2, 0, table_sim_wc["wins"])
-    table_sim_wc["points"] = np.where(table_sim_wc["position"] <= 2, 0, table_sim_wc["points"])
-    table_sim["overall_position"] = table_sim_wc.sort_values(['season', 'wins', 'points'], ascending=[True, False, False])\
-    .groupby(['season']).cumcount() + 1
-    table_sim['playoff'] = np.where((table_sim['position'] <= 2) | (table_sim["overall_position"] <= 2), 1, 0)
-else:
-    table_sim['playoff'] = np.where(table_sim['position'] <= (6 if league_size==12 else 4 if league_size==10 else 1), 1, 0)
+    # Adding 'Playoff' column based on condition (if Position <= 6)
+    if league_selection == "Super Flex Keeper":
+        table_sim_wc = table_sim.copy()
+        table_sim_wc["wins"] = np.where(table_sim_wc["position"] <= 2, 0, table_sim_wc["wins"])
+        table_sim_wc["points"] = np.where(table_sim_wc["position"] <= 2, 0, table_sim_wc["points"])
+        table_sim["overall_position"] = table_sim_wc.sort_values(['season', 'wins', 'points'], ascending=[True, False, False])\
+        .groupby(['season']).cumcount() + 1
+        table_sim['playoff'] = np.where((table_sim['position'] <= 2) | (table_sim["overall_position"] <= 2), 1, 0)
+    else:
+        table_sim['playoff'] = np.where(table_sim['position'] <= (6 if league_size==12 else 4 if league_size==10 else 1), 1, 0)
 
-# Adding 'Bye' column based on condition (if Position <= 2)
-if league_selection == "Super Flex Keeper":
-    table_sim['bye'] = np.where(table_sim['position'] == 1, 1, 0)
-else:
-    table_sim['bye'] = np.where(table_sim['position'] <= 2, 1, 0)
+    # Adding 'Bye' column based on condition (if Position <= 2)
+    if league_selection == "Super Flex Keeper":
+        table_sim['bye'] = np.where(table_sim['position'] == 1, 1, 0)
+    else:
+        table_sim['bye'] = np.where(table_sim['position'] <= 2, 1, 0)
     
-table_sim_new = table_sim.groupby(["manager"]).agg(
-        playoff=("playoff", "mean"),
-        bye=("bye", "mean")
-    ).reset_index()
+    table_sim_new = table_sim.groupby(["manager"]).agg(
+            playoff=("playoff", "mean"),
+            bye=("bye", "mean")
+        ).reset_index()
+    
+    if league_size == 10:
+        table_sim_new.drop("bye", axis=1)
+    
+    return table_sim_new
+
 
 playoff_chances_fields = ["manager", "playoff", "bye"] if "bye" in df_standings else ["manager", "playoff"]
-table_sim_new = table_sim_new.merge(df_standings[playoff_chances_fields], on="manager", how="left", suffixes=("_adjusted", "_original"))
+adjusted_playoff_chances = calculate_adjusted_playoff_chance(df_summary_week_new).merge(df_standings[playoff_chances_fields], on="manager", how="left", suffixes=("_adjusted", "_original"))
 table_cols = ["manager", "playoff_original", "playoff_adjusted"] + (["bye_original", "bye_adjusted"] if league_size==12 else [])
-table_sim_new = table_sim_new[table_cols]
+adjusted_playoff_chances = adjusted_playoff_chances[table_cols]
 
 st.markdown("""##### Adjusted Playoff Chances""")
 config_columns = {
@@ -464,7 +476,7 @@ columns_to_pad = ["manager"]
 
 
 st.dataframe(
-    table_sim_new.sort_values(by=["bye_original", "playoff_original"] if league_size==12 else ["playoff_original"], ascending=False).style\
+    adjusted_playoff_chances.sort_values(by=["bye_original", "playoff_original"] if league_size==12 else ["playoff_original"], ascending=False).style\
         # .set_table_styles(
         #     [{'selector': 'td', 'props': [('padding-left', '20px'), ('padding-right', '20px')]}]
         # )
@@ -477,3 +489,65 @@ st.dataframe(
     height=35*len(df_standings)+38,
     hide_index = True
 )
+
+# def calculate_playoff_percentage_change_by_fixture(df, week, winner):
+#     df_adjusted = df.copy()
+#     df_adjusted["adjusted_winner"] = np.where(
+#         (df_adjusted["week"] == week) & (df_adjusted["manager"] == winner),
+#         winner,
+#         df_adjusted["adjusted_winner"]
+#     )
+#     df_adjusted["adjusted_win"] = np.where(
+#         df_adjusted["adjusted_winner"].isna(), df_adjusted["selected_win"], np.where(
+#             df_adjusted["adjusted_winner"] == df_adjusted["manager"], 1, 0
+#         )
+#     )
+    
+#     df_summary = calculate_adjusted_playoff_chance(df_adjusted)
+#     st.dataframe(df_summary)
+    
+#     return df_summary
+
+# df_adjusted_summary_week = df_summary_week_new[["season", "division", "manager", "week", "adjusted_winner", "selected_win", "selected_pts"]]
+
+# df_adjusted_summary_week
+
+# for week in df_remaining_matchups["week"].unique():
+#     df_remaining_matchups_wide_week = df_remaining_matchups_wide[df_remaining_matchups_wide["week"] == week]
+
+#     week_idx = 0 # index needs to be unique overall but need consecutive for weeks to get in right columns
+#     for idx, row in df_remaining_matchups_wide_week.iterrows():
+#         st.write(row[0])
+#         percentage1 = calculate_playoff_percentage_change_by_fixture(df_adjusted_summary_week, week, row[0])
+#         st.write(percentage1[percentage1["manager"]==user_selection]["playoff"].values)
+
+#         percentage = 0.2
+#         second_percentage = -0.3
+        
+#         placeholder1, placeholder2 = placeholders[idx]
+        
+#         if percentage < 0:
+#             arrow = "&#x2193;"  # Down arrow for negative
+#             color = "red"
+#         else:
+#             arrow = "&#x2191;"  # Up arrow for positive
+#             color = "green"
+
+#         # Update the placeholder with percentage and global total wins
+#         placeholder1.markdown(
+#             f"<div style='text-align: right; color:{color};'>{percentage:.2f}% {arrow}</div>", 
+#             unsafe_allow_html=True
+#         )
+        
+#         if second_percentage < 0:
+#             second_arrow = "&#x2193;"  # Down arrow for negative
+#             second_color = "red"
+#         else:
+#             second_arrow = "&#x2191;"  # Up arrow for positive
+#             second_color = "green"
+
+#         # Second row: Display the second percentage below the first one
+#         placeholder2.markdown(
+#             f"<div style='text-align: right; color:{second_color};'>{second_percentage:.2f}% {second_arrow}</div>", 
+#             unsafe_allow_html=True
+#         )
