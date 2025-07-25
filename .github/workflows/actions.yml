@@ -42,15 +42,25 @@ jobs:
       #     source nfl-env/bin/activate
       #     pip install -r requirements-actions.txt
 
-      # Set up R environment
+      # Verify R installation and find library path
+      - name: Verify R library
+        run: |
+          echo "Checking R installation..."
+          which R
+          R --version
+          echo "Looking for libR.so..."
+          find /usr -name "libR.so" 2>/dev/null || echo "libR.so not found in /usr"
+          ls -la /usr/lib/R/lib/ || echo "/usr/lib/R/lib/ not found"
+
+      # Set R_HOME environment variable for Linux (use actual install location)
+      - name: Set R_HOME
+        run: |
+          echo "R_HOME=/usr/lib/R" >> $GITHUB_ENV
+          echo "LD_LIBRARY_PATH=/usr/lib/R/lib:$LD_LIBRARY_PATH" >> $GITHUB_ENV
+
+      # Set up R environment (remove specific version since we're using apt-get R)
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
-        with:
-          r-version: '4.5.1'
-
-      # Set R_HOME environment variable for Linux
-      - name: Set R_HOME
-        run: echo "R_HOME=/opt/R/4.5.1" >> $GITHUB_ENV
 
       # Create a writable R library and configure .libPaths to use it
       - name: Create personal R library

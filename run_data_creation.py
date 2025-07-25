@@ -19,9 +19,15 @@ if platform.system() == 'Windows':
     os.environ['R_ARCH'] = '/x64'
 else:
     # Linux/Unix configuration (for GitHub Actions)
-    # Check if R_HOME is already set by the workflow, otherwise use default
+    # Check if R_HOME is already set by the workflow, otherwise use default apt-get install location
     if 'R_HOME' not in os.environ:
-        os.environ['R_HOME'] = '/opt/R/4.5.1'
+        os.environ['R_HOME'] = '/usr/lib/R'
+    
+    # Set LD_LIBRARY_PATH to help rpy2 find libR.so
+    if 'LD_LIBRARY_PATH' not in os.environ:
+        os.environ['LD_LIBRARY_PATH'] = '/usr/lib/R/lib'
+    else:
+        os.environ['LD_LIBRARY_PATH'] = f"/usr/lib/R/lib:{os.environ['LD_LIBRARY_PATH']}"
     
     # Set R library paths for Linux
     home_dir = os.path.expanduser('~')
