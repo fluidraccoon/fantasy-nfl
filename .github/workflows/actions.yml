@@ -23,10 +23,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev
 
-      # Install R
-      - name: Install R
-        run: sudo apt-get update && sudo apt-get install -y r-base
-
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
@@ -36,51 +32,33 @@ jobs:
         run: |
           pip install -r requirements-actions.txt
 
-      # - name: Install Python dependencies
-      #   run: |
-      #     python -m venv nfl-env
-      #     source nfl-env/bin/activate
-      #     pip install -r requirements-actions.txt
-
-      # Verify R installation and find library path
-      - name: Verify R library
-        run: |
-          echo "Checking R installation..."
-          which R
-          R --version
-          echo "Looking for libR.so..."
-          find /usr -name "libR.so" 2>/dev/null || echo "libR.so not found in /usr"
-          ls -la /usr/lib/R/lib/ || echo "/usr/lib/R/lib/ not found"
-
-      # Set R_HOME environment variable for Linux (use actual install location)
-      - name: Set R_HOME
-        run: |
-          echo "R_HOME=/usr/lib/R" >> $GITHUB_ENV
-          echo "LD_LIBRARY_PATH=/usr/lib/R/lib:$LD_LIBRARY_PATH" >> $GITHUB_ENV
-
-      # Set up R environment (remove specific version since we're using apt-get R)
+      # Set up R environment (this will install R properly)
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
+
+      # Set R environment variables for rpy2 compatibility
+      - name: Set R environment variables
+        run: |
+          echo "R_HOME=$(R RHOME)" >> $GITHUB_ENV
+          echo "LD_LIBRARY_PATH=$(R RHOME)/lib:$LD_LIBRARY_PATH" >> $GITHUB_ENV
 
       # Create a writable R library and configure .libPaths to use it
       - name: Create personal R library
         run: |
-          mkdir -p ~/R/libs
-          echo 'R_LIBS_USER="~/R/libs"' >> ~/.Renviron
+          mkdir -p /home/runner/R/libs
+          echo 'R_LIBS_USER="/home/runner/R/libs"' >> ~/.Renviron
 
-      # Clean R library cache to avoid version conflicts
-      - name: Clean R library cache
-        run: rm -rf ~/R/libs/*
+      # Clean R package library to avoid version conflicts
+      - name: Clean R package library
+        run: rm -rf /home/runner/R/libs/*
 
-      # Reinstall rlang and dependencies to match current R version
-      - name: Reinstall rlang and dependencies
+      # Install R dependencies cleanly
+      - name: Install R dependencies
         run: |
-          Rscript -e 'install.packages("rlang", repos="https://cloud.r-project.org")'
-          Rscript -e 'install.packages("ffscrapr", repos="https://cloud.r-project.org")'
-
-      - name: Install Dependencies
-        run: |
-          R -e "install.packages('ffscrapr', repos='https://cloud.r-project.org')"
+          Rscript -e "install.packages('rlang', repos='https://cloud.r-project.org')"
+          Rscript -e "install.packages('ffscrapr', repos='https://cloud.r-project.org')"
 
       - name: Run Python Script
         run: |
