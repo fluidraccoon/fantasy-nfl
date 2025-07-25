@@ -68,6 +68,16 @@ jobs:
           mkdir -p ~/R/libs
           echo 'R_LIBS_USER="~/R/libs"' >> ~/.Renviron
 
+      # Clean R library cache to avoid version conflicts
+      - name: Clean R library cache
+        run: rm -rf ~/R/libs/*
+
+      # Reinstall rlang and dependencies to match current R version
+      - name: Reinstall rlang and dependencies
+        run: |
+          Rscript -e 'install.packages("rlang", repos="https://cloud.r-project.org")'
+          Rscript -e 'install.packages("ffscrapr", repos="https://cloud.r-project.org")'
+
       - name: Install Dependencies
         run: |
           R -e "install.packages('ffscrapr', repos='https://cloud.r-project.org')"
