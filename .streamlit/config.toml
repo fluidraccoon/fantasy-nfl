@@ -1,0 +1,13 @@
+[server]
+# Disable file watcher for __pycache__ directories
+fileWatcherType = "poll"
+
+# Alternatively, you can use "none" to disable file watching entirely
+# fileWatcherType = "none"
+
+# Set polling interval (in seconds) if using poll method
+filePollInterval = 2
+
+[runner]
+# Reduce automatic rerun frequency
+fastReruns = false

@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "nfl-fantasy"
+version = "0.1.0"
+description = ""
+authors = ["fluidraccoon <danieljcoulton@gmail.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.11"
+requests = "^2.32.4"
+streamlit = "^1.45.1"
+black = "^25.1.0"
+streamlit-javascript = "^0.1.5"
+sleeper-py = "^1.0.1"
+pulp = "^3.2.1"
+scipy = "^1.16.0"
+rpy2 = "3.5.14"
+
+[tool.poetry.requires-plugins]
+poetry-plugin-export = ">=1.8"
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
