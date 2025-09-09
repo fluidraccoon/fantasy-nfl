@@ -41,11 +41,14 @@ def get_roster_df(league_id):
 
     roster_list = []
     for team in rosters:
+        # Handle case where team has no players (empty roster)
+        players = team["players"] if team["players"] else []
+        
         df_roster = pd.DataFrame(
             {
                 "roster_id": team["roster_id"],
                 "owner_id": team["owner_id"],
-                "player_id": team["players"],
+                "player_id": players,
                 "division": (
                     team["settings"]["division"]
                     if "division" in team["settings"]

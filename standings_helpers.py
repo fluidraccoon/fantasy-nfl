@@ -58,6 +58,17 @@ def get_potential_points(df_matchups, roster_positions, league_size, gameweek_en
         num_k = roster_positions.count("K")
         num_def = roster_positions.count("DEF")
 
+        # Handle empty lineups (teams with no players for this week)
+        if len(df_lineup) == 0:
+            # Create empty lineup with required columns
+            df_lineup = pd.DataFrame({
+                'pp_starter': [],
+                'pp_points': [],
+                'starter_points': []
+            })
+            df_lineup_list.append(df_lineup)
+            continue
+
         ## Set variables
         x = pulp.LpVariable.dict(
             "player", range(0, len(df_lineup)), 0, 1, cat=pulp.LpInteger

@@ -57,6 +57,9 @@ df_summary_season = []
 df_draft_picks_all_leagues = []  # For storing draft picks data
 
 for league in all_leagues:
+    # Skip "The Guillotine" league
+    if league["name"] == "The Guillotine":
+        continue
     # if not league["name"] == "NFL Dynasty":
     #     continue
     conn = ffscrapr.sleeper_connect(season=season, league_id=league["league_id"])
@@ -133,7 +136,7 @@ for league in all_leagues:
         adp_outcomes,
         latest_rankings_draft,
         sims,
-        weeks=range(1, df_matchups["gameweek"].max() + 1),
+        weeks=range(1, int(df_matchups["gameweek"].max()) + 1),
         rosters=ff_rosters,
     )
     roster_scores = ffs_score_rosters(projected_scores, ff_rosters)

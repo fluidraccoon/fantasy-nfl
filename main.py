@@ -56,7 +56,8 @@ def render_sidebar(df_matchup_schedule):
     """Render sidebar with persistent dropdown"""
     st.sidebar.title("Fantasy NFL Dashboard 🏈")
 
-    user_options = sorted(set(df_matchup_schedule["manager"]))
+    # Filter out NaN values before sorting
+    user_options = sorted(set(df_matchup_schedule["manager"].dropna()))
     selected_user = st.sidebar.selectbox(
         label="Select your username",
         options=user_options,
