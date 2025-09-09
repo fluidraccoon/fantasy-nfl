@@ -46,9 +46,9 @@ from import_r_packages import ffscrapr
 df_players = get_players_df()
 
 username = "DanCoulton"
-season = 2024
-sims = 10
-current_gameweek = 6
+season = 2025
+sims = 1000
+current_gameweek = 1
 
 all_leagues = get_league_dict(username, season)
 df_matchup_schedule_all_leagues = []
@@ -178,9 +178,6 @@ if df_draft_picks_all_leagues:
     print(f"Saved {len(df_draft_picks_combined)} draft picks from {len(df_draft_picks_all_leagues)} dynasty leagues to draft_picks.csv")
 else:
     print("No draft picks data to save")
-
-# df_summary_week = pd.concat(df_summary_week)
-# df_summary_week.to_csv('data/df_summary_week.csv', index=False)
 
 df_summary_season = pd.concat(df_summary_season)
 df_summary_season.to_csv("data/df_summary_season.csv", index=False)

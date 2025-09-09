@@ -123,9 +123,9 @@ def main():
     d.max_gameweek = max(d.df_matchup_schedule["gameweek"])
     # with st.sidebar:
     #     gameweek_start, gameweek_end = st.slider("Select gameweeks", 1, 2, (1, 2))
-    d.season = 2024
+    d.season = 2025
     d.gameweek_start = 1
-    d.gameweek_end = 6
+    d.gameweek_end = 1
     d.df_matchup_schedule = d.df_matchup_schedule[
         (d.df_matchup_schedule["gameweek"] >= d.gameweek_start)
         & (d.df_matchup_schedule["gameweek"] <= d.gameweek_end)
