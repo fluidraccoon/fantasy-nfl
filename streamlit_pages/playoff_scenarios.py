@@ -98,52 +98,57 @@ def calculate_adjusted_playoff_chance(df, league_config):
 
 
 def _calculate_super_flex_playoffs_optimized(table_sim):
-    """Optimized version of Super Flex playoff calculation."""
-    # Use vectorized operations instead of copying entire DataFrame
-    mask_top2 = table_sim["position"] <= 2
+    """Optimized version of Super Flex playoff calculation with divisional structure."""
+    # Step 1: Mark division winners (top team from each division gets a bye)
+    division_winners_mask = table_sim["position"] == 1
     
-    # Calculate wildcard positions more efficiently
-    table_sim_wins = np.where(mask_top2, 0, table_sim["wins"])
-    table_sim_points = np.where(mask_top2, 0, table_sim["points"])
+    # Step 2: For wildcard spots, consider all teams except division winners
+    # Create a temporary DataFrame for wildcard calculation
+    wildcard_candidates = table_sim[~division_winners_mask].copy()
     
-    # Create temporary series for sorting without full DataFrame copy
-    temp_df = pd.DataFrame({
-        'season': table_sim['season'],
-        'wins': table_sim_wins,
-        'points': table_sim_points
-    }).sort_values(["season", "wins", "points"], ascending=[True, False, False])
+    # Sort wildcard candidates by wins, then points (overall, ignoring divisions)
+    wildcard_candidates = wildcard_candidates.sort_values(
+        ["season", "wins", "points"], ascending=[True, False, False]
+    )
     
-    table_sim["overall_position"] = temp_df.groupby("season").cumcount() + 1
+    # Assign wildcard positions
+    wildcard_candidates["wildcard_position"] = wildcard_candidates.groupby("season").cumcount() + 1
     
-    # Vectorized playoff calculation
-    table_sim["playoff"] = ((table_sim["position"] <= 2) | 
-                           (table_sim["overall_position"] <= 2)).astype(int)
+    # Top 4 wildcard teams make playoffs (positions 1-4)
+    wildcard_candidates["playoff"] = (wildcard_candidates["wildcard_position"] <= 4).astype(int)
+    
+    # Merge back to original DataFrame
+    table_sim["playoff"] = 0  # Initialize all to 0
+    table_sim.loc[division_winners_mask, "playoff"] = 1  # Division winners make playoffs
+    table_sim.loc[wildcard_candidates[wildcard_candidates["playoff"] == 1].index, "playoff"] = 1
     
     return table_sim
 
 
 def _calculate_super_flex_playoffs(table_sim):
-    """Calculate playoff positions for Super Flex Keeper league."""
-    table_sim_wc = table_sim.copy()
-    table_sim_wc["wins"] = np.where(
-        table_sim_wc["position"] <= 2, 0, table_sim_wc["wins"]
+    """Calculate playoff positions for Super Flex Keeper league with divisional structure."""
+    # Step 1: Mark division winners (top team from each division gets a bye)
+    division_winners = table_sim[table_sim["position"] == 1].copy()
+    
+    # Step 2: Get wildcard candidates (all teams except division winners)
+    wildcard_candidates = table_sim[table_sim["position"] != 1].copy()
+    
+    # Step 3: Sort wildcard candidates by overall record (ignoring divisions)
+    wildcard_candidates = wildcard_candidates.sort_values(
+        ["season", "wins", "points"], ascending=[True, False, False]
     )
-    table_sim_wc["points"] = np.where(
-        table_sim_wc["position"] <= 2, 0, table_sim_wc["points"]
-    )
-    table_sim["overall_position"] = (
-        table_sim_wc.sort_values(
-            ["season", "wins", "points"], ascending=[True, False, False]
-        )
-        .groupby(["season"])
-        .cumcount()
-        + 1
-    )
-    table_sim["playoff"] = np.where(
-        (table_sim["position"] <= 2) | (table_sim["overall_position"] <= 2),
-        1,
-        0,
-    )
+    wildcard_candidates["wildcard_position"] = wildcard_candidates.groupby("season").cumcount() + 1
+    
+    # Step 4: Assign playoff spots
+    table_sim["playoff"] = 0  # Initialize all to 0
+    
+    # Division winners automatically make playoffs
+    table_sim.loc[table_sim["position"] == 1, "playoff"] = 1
+    
+    # Top 4 wildcard teams make playoffs
+    wildcard_playoff_teams = wildcard_candidates[wildcard_candidates["wildcard_position"] <= 4]
+    table_sim.loc[wildcard_playoff_teams.index, "playoff"] = 1
+    
     return table_sim
 
 
@@ -157,6 +162,7 @@ def _calculate_standard_playoffs(table_sim, league_size):
 def _calculate_bye_weeks(table_sim, league_config):
     """Calculate bye week eligibility."""
     if league_config.selected_league == "Super Flex Keeper":
+        # Only division winners (position 1 in each division) get byes
         table_sim["bye"] = np.where(table_sim["position"] == 1, 1, 0)
     else:
         table_sim["bye"] = np.where(table_sim["position"] <= 2, 1, 0)

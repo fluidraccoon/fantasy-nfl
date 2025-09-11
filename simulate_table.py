@@ -26,24 +26,26 @@ def simulate_table(d):
 
     # Adding 'Playoff' column based on condition (if Position <= 6)
     if d.selected_league == "Super Flex Keeper":
-        table_sim_wc = table_sim.copy()
-        table_sim_wc["wins"] = np.where(
-            table_sim_wc["position"] <= 2, 0, table_sim_wc["wins"]
+        # Step 1: Mark division winners (position 1 in each division)
+        division_winners_mask = table_sim["position"] == 1
+        
+        # Step 2: Get wildcard candidates (excluding division winners)
+        wildcard_candidates = table_sim[~division_winners_mask].copy()
+        
+        # Step 3: Sort wildcard candidates by overall record
+        wildcard_candidates = wildcard_candidates.sort_values(
+            ["season", "wins", "points"], ascending=[True, False, False]
         )
-        table_sim_wc["points"] = np.where(
-            table_sim_wc["position"] <= 2, 0, table_sim_wc["points"]
-        )
-        table_sim["overall_position"] = (
-            table_sim_wc.sort_values(
-                ["season", "wins", "points"], ascending=[True, False, False]
-            )
-            .groupby(["season"])
-            .cumcount()
-            + 1
-        )
-        table_sim["playoff"] = np.where(
-            (table_sim["position"] <= 2) | (table_sim["overall_position"] <= 2), 1, 0
-        )
+        wildcard_candidates["wildcard_position"] = wildcard_candidates.groupby("season").cumcount() + 1
+        
+        # Step 4: Assign playoff spots
+        table_sim["playoff"] = 0  # Initialize all to 0
+        table_sim.loc[division_winners_mask, "playoff"] = 1  # Division winners make playoffs
+        
+        # Top 4 wildcard teams make playoffs
+        wildcard_playoff_mask = wildcard_candidates["wildcard_position"] <= 4
+        wildcard_playoff_indices = wildcard_candidates[wildcard_playoff_mask].index
+        table_sim.loc[wildcard_playoff_indices, "playoff"] = 1
     else:
         table_sim["playoff"] = np.where(
             table_sim["position"]

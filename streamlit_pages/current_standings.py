@@ -32,8 +32,45 @@ def current_standings(d):
 
     df_standings = d.df_standings.copy()
 
-    def set_background_color(x, league_size):
-        if league_size == 12:
+    def determine_super_flex_playoff_status(df_standings_full):
+        """Determine playoff status for Super Flex Keeper league based on current standings"""
+        # Get division winners (top of each division)
+        division_winners = []
+        for division in [1, 2]:
+            div_teams = df_standings_full[df_standings_full["division"] == division]
+            if not div_teams.empty:
+                div_winner = div_teams.sort_values(["wins", "points"], ascending=False).iloc[0]
+                division_winners.append(div_winner["manager"])
+        
+        # Get wildcard candidates (everyone except division winners)
+        wildcard_candidates = df_standings_full[~df_standings_full["manager"].isin(division_winners)].copy()
+        
+        # Sort wildcards by overall record
+        wildcard_candidates = wildcard_candidates.sort_values(["wins", "points"], ascending=False)
+        
+        # Top 4 wildcards make playoffs
+        wildcard_playoff_teams = wildcard_candidates.head(4)["manager"].tolist()
+        
+        return {
+            "division_winners": division_winners,
+            "wildcard_teams": wildcard_playoff_teams,
+            "playoff_teams": division_winners + wildcard_playoff_teams
+        }
+
+    def set_background_color(x, league_size, is_super_flex=False, manager_name=None, 
+                           division_position=None, playoff_status=None):
+        if is_super_flex and playoff_status is not None and manager_name is not None:
+            # For Super Flex Keeper, use actual playoff structure
+            if manager_name in playoff_status["division_winners"]:
+                # Division winners get blue (bye)
+                color = "#0080ff"
+            elif manager_name in playoff_status["wildcard_teams"]:
+                # Wildcard playoff teams get green
+                color = "#79c973"
+            else:
+                # Non-playoff teams get red
+                color = "#ff6666"
+        elif league_size == 12:
             color = (
                 "#0080ff" if x.name <= 2 else "#79c973" if x.name <= 6 else "#ff6666"
             )
@@ -73,24 +110,79 @@ def current_standings(d):
         del config_columns["bye"]
         df_standings = df_standings.drop(columns=["bye"])
 
-    st.dataframe(
-        df_standings.style.format("{:.0f}", subset=["wins"])
-        .format("{:.2f}", subset=["points"])
-        .format("{:.1f}", subset=["xwins"])
-        .format(
-            "{:.1%}",
-            subset=(
-                ["accuracy", "playoff", "bye"]
-                if d.league_size == 12
-                else ["accuracy", "playoff"]
-            ),
+    # Check if this is Super Flex Keeper league with divisions
+    if d.selected_league == "Super Flex Keeper" and "division" in df_standings.columns:
+        # Determine playoff status for the entire league
+        playoff_status = determine_super_flex_playoff_status(df_standings)
+        
+        # Display separate tables for each division
+        divisions = sorted(df_standings["division"].unique())
+        division_names = {1: "North Division", 2: "South Division"}
+        
+        for division in divisions:
+            division_name = division_names.get(division, f"Division {division}")
+            st.subheader(division_name)
+            
+            # Filter standings for this division
+            division_standings = df_standings[df_standings["division"] == division].copy()
+            
+            # Sort by wins, then points within division
+            division_standings = division_standings.sort_values(
+                by=["wins", "points"], ascending=False
+            ).reset_index(drop=True)
+            division_standings.index = division_standings.index + 1
+            
+            # Remove division column for display
+            display_standings = division_standings.drop(columns=["division"])
+            
+            # Create a custom styling function for this division
+            def apply_super_flex_colors(row):
+                return set_background_color(
+                    row, d.league_size, is_super_flex=True, 
+                    manager_name=row["manager"], playoff_status=playoff_status
+                )
+            
+            st.dataframe(
+                display_standings.style.format("{:.0f}", subset=["wins"])
+                .format("{:.2f}", subset=["points"])
+                .format("{:.1f}", subset=["xwins"])
+                .format(
+                    "{:.1%}",
+                    subset=(
+                        ["accuracy", "playoff", "bye"]
+                        if d.league_size == 12
+                        else ["accuracy", "playoff"]
+                    ),
+                )
+                .apply(apply_super_flex_colors, axis=1)
+                .apply(lambda x: [f"color: white" for i in x], axis=1),
+                column_config=config_columns,
+                height=35 * len(display_standings) + 38,
+                use_container_width=False,
+            )
+            
+            # Add some space between divisions
+            st.write("")
+    else:
+        # Standard single table display
+        st.dataframe(
+            df_standings.style.format("{:.0f}", subset=["wins"])
+            .format("{:.2f}", subset=["points"])
+            .format("{:.1f}", subset=["xwins"])
+            .format(
+                "{:.1%}",
+                subset=(
+                    ["accuracy", "playoff", "bye"]
+                    if d.league_size == 12
+                    else ["accuracy", "playoff"]
+                ),
+            )
+            .apply(lambda x: set_background_color(x, d.league_size), axis=1)
+            .apply(lambda x: [f"color: white" for i in x], axis=1),
+            column_config=config_columns,
+            height=35 * len(df_standings) + 38,
+            use_container_width=False,
         )
-        .apply(lambda x: set_background_color(x, d.league_size), axis=1)
-        .apply(lambda x: [f"color: white" for i in x], axis=1),
-        column_config=config_columns,
-        height=35 * len(df_standings) + 38,
-        use_container_width=False,
-    )
 
 
 def wins_over_expectation(d):

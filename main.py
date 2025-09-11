@@ -33,6 +33,13 @@ def create_standings_data(d):
         )
         .reset_index()
     )
+    
+    # Add division information for Super Flex Keeper league
+    if d.selected_league == "Super Flex Keeper" and hasattr(d, 'df_summary_week'):
+        # Get division mapping from summary week data
+        division_mapping = d.df_summary_week[['manager', 'division']].drop_duplicates()
+        df_standings = df_standings.merge(division_mapping, on='manager', how='left')
+    
     df_standings = df_standings.sort_values(
         by=["wins", "points"], ascending=False
     ).reset_index(drop=True)
