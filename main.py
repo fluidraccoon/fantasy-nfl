@@ -133,7 +133,7 @@ def main():
     #     gameweek_start, gameweek_end = st.slider("Select gameweeks", 1, 2, (1, 2))
     d.season = 2025
     d.gameweek_start = 1
-    d.gameweek_end = 1
+    d.gameweek_end = 2
     d.df_matchup_schedule = d.df_matchup_schedule[
         (d.df_matchup_schedule["gameweek"] >= d.gameweek_start)
         & (d.df_matchup_schedule["gameweek"] <= d.gameweek_end)
