@@ -246,50 +246,58 @@ def render_pick_likelihood(d):
                 display_probs_formatted[col] = display_probs_formatted[col].apply(lambda x: f"{x:.1f}%")
             
             # Style the dataframe to highlight probabilities with red color scale
-            def highlight_probability_scale(row):
-                # Convert percentage strings back to numbers for comparison
-                numeric_row = pd.Series([float(x.rstrip('%')) for x in row], index=row.index)
+            def highlight_probability_scale(df):
+                # Convert all percentage strings to numbers for global min/max calculation
+                numeric_df = df.copy()
+                for col in numeric_df.columns:
+                    numeric_df[col] = numeric_df[col].apply(lambda x: float(x.rstrip('%')))
                 
-                # Exclude playoffs column from color scaling
-                draft_pick_cols = [col for col in row.index if 'Playoffs' not in str(col)]
-                playoff_cols = [col for col in row.index if 'Playoffs' in str(col)]
+                # Get global min/max from columns 1-6 (draft pick columns) across ALL rows
+                draft_pick_cols = [col for col in numeric_df.columns if 'Playoffs' not in str(col)]
                 
-                # Get min/max only from draft pick columns
                 if draft_pick_cols:
-                    draft_pick_values = numeric_row[draft_pick_cols]
-                    max_val = draft_pick_values.max()
-                    min_val = draft_pick_values.min()
+                    # Get global min/max across all cells in draft pick columns
+                    global_min = numeric_df[draft_pick_cols].min().min()
+                    global_max = numeric_df[draft_pick_cols].max().max()
                 else:
-                    max_val = min_val = 0
+                    global_min = global_max = 0
                 
-                # Create color scale from light to dark red based on probability
-                colors = []
-                for col, v in row.items():
-                    prob = float(v.rstrip('%'))
-                    
-                    # Keep playoffs column white (no color)
-                    if 'Playoffs' in str(col):
-                        colors.append('')
-                    elif prob == 0:
-                        colors.append('')  # No color for 0%
-                    else:
-                        # Scale from light red (low probability) to dark red (high probability)
-                        # Normalize the value between 0 and 1 using only draft pick columns
-                        if max_val > min_val:
-                            intensity = (prob - min_val) / (max_val - min_val)
-                        else:
-                            intensity = 1.0 if prob > 0 else 0.0
+                # Create a DataFrame to store the styling
+                style_df = pd.DataFrame('', index=df.index, columns=df.columns)
+                
+                # Apply colors cell by cell using global scale
+                for idx in df.index:
+                    for col in df.columns:
+                        v = df.loc[idx, col]
+                        prob = float(v.rstrip('%'))
                         
-                        # Create red color with varying intensity (softer red)
-                        # Light red: rgb(255, 235, 235) to Medium red: rgb(255, 180, 180)
-                        red_value = 255
-                        green_blue_value = int(235 - (55 * intensity))
-                        colors.append(f'background-color: rgb({red_value}, {green_blue_value}, {green_blue_value})')
+                        # Keep playoffs column white (no color)
+                        if 'Playoffs' in str(col):
+                            style_df.loc[idx, col] = ''
+                        elif prob == 0:
+                            style_df.loc[idx, col] = ''  # No color for 0%
+                        else:
+                            # Scale from light red (low probability) to dark red (high probability)
+                            # Normalize using GLOBAL min/max values from draft pick columns only
+                            if global_max > global_min:
+                                intensity = (prob - global_min) / (global_max - global_min)
+                            else:
+                                intensity = 1.0 if prob > 0 else 0.0
+                            
+                            # Apply a power function to make low values more distinct
+                            # This spreads out the lower values more dramatically
+                            intensity = intensity ** 0.5  # Square root makes lower values more visible
+                            
+                            # Create red color with more dramatic intensity range
+                            # Very light red: rgb(255, 245, 245) to Dark red: rgb(200, 50, 50)
+                            red_value = int(255 - (55 * intensity))  # 255 to 200
+                            green_blue_value = int(245 - (195 * intensity))  # 245 to 50
+                            style_df.loc[idx, col] = f'background-color: rgb({red_value}, {green_blue_value}, {green_blue_value})'
                 
-                return colors
+                return style_df
             
-            # Apply styling
-            styled_df = display_probs_formatted.style.apply(highlight_probability_scale, axis=1)
+            # Apply styling using the new function
+            styled_df = display_probs_formatted.style.apply(highlight_probability_scale, axis=None)
             
             st.dataframe(
                 styled_df,
