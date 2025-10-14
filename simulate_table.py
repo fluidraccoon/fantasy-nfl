@@ -66,7 +66,10 @@ def simulate_table(d):
     )
 
     # Adding 'Draft_Pos' column based on new ranking after re-arranging
-    table_sim["draft_pos"] = table_sim.groupby("season").cumcount() + 1
+    # Reverse the draft position so worst teams get pick 1, best teams get highest pick number
+    draft_positions = table_sim.groupby("season").cumcount() + 1
+    max_draft_pos = table_sim.groupby("season")["season"].transform("count")
+    table_sim["draft_pos"] = max_draft_pos - draft_positions + 1
 
     # Removing the groupby index (like ungroup in R)
     table_sim = table_sim.reset_index(drop=True)
